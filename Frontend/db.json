@@ -1,0 +1,256 @@
+{
+  "users": [
+    {
+      "name": "Noorul",
+      "email": "noorulbashri241@gmail.com",
+      "phone": "6369481148",
+      "transactions": [
+        {
+          "plan": "Popular Plan",
+          "price": "1899",
+          "date": "2024-01-01",
+          "paymentMode": "Credit Card",
+          "expiryDate": "2025-01-01"
+        },
+        {
+          "plan": "Validity Plans",
+          "price": "Rs.2999",
+          "date": "2024-03-25",
+          "paymentMode": "Debit Card",
+          "expiryDate": "2025-03-25"
+        },
+        {
+          "plan": "Validity Plans",
+          "date": "2023-12-15",
+          "paymentMode": "Debit Card",
+          "expiryDate": "2024-12-15"
+        }
+      ]
+    },
+    {
+      "name": "John Smith",
+      "email": "john.smith@example.com",
+      "phone": "2025550101",
+      "transactions": [
+        {
+          "plan": "Popular Plan",
+          "price": "Rs.2999",
+          "validity": "365 Days",
+          "date": "2024-02-29",
+          "paymentMode": "Credit Card",
+          "expiryDate": "2025-02-29"
+        },
+        {
+          "plan": "Validity Plans",
+          "price": "Rs.1999",
+          "validity": "180 Days",
+          "date": "2024-01-15",
+          "paymentMode": "Debit Card",
+          "expiryDate": "2024-07-14"
+        }
+      ]
+    }
+  ],
+  "popularPlans": [
+    {
+      "id": "plan1",
+      "name": "Popular Plan",
+      "price": "Rs.2999",
+      "data": "2.5 GB/Day",
+      "validity": "365 Days",
+      "benefits": "Unlimited calls and free SMS",
+      "status": "Active",
+      "subscriptions": [
+        {
+          "type": "youtube",
+          "description": "YouTube Premium"
+        },
+        {
+          "type": "netflix",
+          "description": "Netflix subscription"
+        },
+        {
+          "type": "amazon",
+          "description": "Amazon Prime"
+        },
+        {
+          "type": "disney",
+          "description": "Disney+"
+        },
+        {
+          "type": "hbo",
+          "description": "HBO"
+        }
+      ]
+    },
+    {
+      "id": "plan2",
+      "name": "Popular Plan",
+      "price": "Rs.1999",
+      "data": "1.5 GB/Day",
+      "validity": "180 Days",
+      "benefits": "Unlimited calls and 100 SMS",
+      "status": "Active",
+      "subscriptions": [
+        {
+          "type": "amazon",
+          "description": "Amazon Prime"
+        },
+        {
+          "type": "netflix",
+          "description": "Netflix subscription"
+        }
+      ]
+    }
+  ],
+  "dataPlans": [
+    {
+      "id": "data1",
+      "name": "Data Add-on",
+      "price": "Rs.299",
+      "data": "10 GB",
+      "validity": "30 Days",
+      "additionalBenefits": "No speed restrictions",
+      "status": "Active"
+    },
+    {
+      "id": "data2",
+      "name": "Data Add-on",
+      "price": "Rs.199",
+      "data": "5 GB",
+      "validity": "28 Days",
+      "additionalBenefits": "Works with existing plans",
+      "status": "Active"
+    }
+  ],
+  "validityPlans": [
+    {
+      "id": "validity1",
+      "name": "Validity Plan",
+      "price": "Rs.2999",
+      "data": "2.5 GB/Day",
+      "validity": "365 Days",
+      "benefits": "Unlimited calls and free SMS",
+      "status": "Active",
+      "subscriptions": [
+        {
+          "type": "netflix",
+          "description": "Netflix Subscription"
+        }
+      ]
+    },
+    {
+      "id": "validity2",
+      "name": "Validity Plan",
+      "price": "Rs.1999",
+      "data": "1.5 GB/Day",
+      "validity": "180 Days",
+      "benefits": "Unlimited calls and 100 SMS",
+      "status": "Active",
+      "subscriptions": [
+        {
+          "type": "amazon",
+          "description": "Amazon Prime"
+        }
+      ]
+    }
+  ],
+  "topupPlans": [
+    {
+      "id": 1,
+      "name": "Topup Boost 50",
+      "price": "Rs.50",
+      "talktime": "100 mins",
+      "validity": "1 Day",
+      "description": "Extra talktime boost"
+    },
+    {
+      "id": 2,
+      "name": "Topup Boost 100",
+      "price": "Rs.100",
+      "talktime": "200 mins",
+      "validity": "1 Day",
+      "description": "Additional talktime"
+    }
+  ],
+  "entertainmentPlans": [
+    {
+      "id": "ent1",
+      "name": "Entertainment Plan",
+      "price": "Rs.499",
+      "data": "1.5 GB/Day",
+      "validity": "28 Days",
+      "additionalBenefits": "Unlimited calls and free SMS",
+      "subscriptions": [
+        {
+          "type": "netflix",
+          "description": "1 Month Free"
+        },
+        {
+          "type": "amazon",
+          "description": "1 Month Free"
+        },
+        {
+          "type": "hbo",
+          "description": "3 Months Free"
+        }
+      ]
+    },
+    {
+      "id": "ent2",
+      "name": "Entertainment Plan",
+      "price": "Rs.799",
+      "data": "2 GB/Day",
+      "validity": "56 Days",
+      "additionalBenefits": "Free incoming calls",
+      "subscriptions": [
+        {
+          "type": "disney",
+          "description": "3 Months Free"
+        },
+        {
+          "type": "youtube",
+          "description": "1 Month Free"
+        }
+      ]
+    }
+  ],
+  "annualPlans": [
+    {
+      "id": 1,
+      "name": "Elite Annual Plan",
+      "price": "3999",
+      "data": "3 GB/Day",
+      "validity": "365 Days",
+      "benefits": "Unlimited calls, SMS, and 1GB rollover data",
+      "subscriptions": [
+        {
+          "type": "youtube",
+          "description": "YouTube Premium"
+        },
+        {
+          "type": "netflix",
+          "description": "Netflix"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Premium Annual Plan",
+      "price": "3499",
+      "data": "2.5 GB/Day",
+      "validity": "365 Days",
+      "benefits": "Unlimited calls, free SMS, and priority support",
+      "subscriptions": [
+        {
+          "type": "amazon",
+          "description": "Amazon Prime"
+        },
+        {
+          "type": "hbo",
+          "description": "HBO"
+        }
+      ]
+    }
+  ]
+}

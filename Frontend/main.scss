@@ -1,0 +1,252 @@
+
+$secondary: rgb(224, 224, 176);
+$info :rgb(13, 135, 217);
+$primary :rgb(61, 141, 122);
+
+
+
+#mobile_num::placeholder {
+  color: white;
+  opacity: 1;
+}
+.text-justify {
+  text-align: justify;
+}
+.container {
+  max-width: 90%;
+  margin: auto;
+}
+.equal-spacing {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 90%;
+}
+
+
+
+  /* Custom CSS for carousel */
+  .carousel-item img {
+    height: 500px; /* Default height */
+    object-fit:contain;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .carousel-item img {
+      height: 300px; /* Medium screens */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .carousel-item img {
+      height: 250px; /* Small screens */
+    }
+  }
+
+  @media (max-width: 576px) {
+    .carousel-item img {
+      height: 200px; /* Extra small screens */
+    }
+  }
+
+.equal-height {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.card {
+    height: 100%;
+}
+
+
+ .animated-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Hover effect: Zoom in and box-shadow effect */
+    .animated-card:hover {
+        transform: scale(1.05);  /* Slight zoom-in effect */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);  /* Light shadow to emphasize the zoom */
+    }
+
+    /* Optional: add smooth transition to images */
+    .animated-card img {
+        transition: transform 0.3s ease;  /* Make image smooth */
+    }
+
+    .animated-card:hover img {
+        transform: scale(1.05);  /* Slight zoom effect on image too */
+    }
+
+    .plan-card {
+      transition: transform 0.3s ease-in-out;
+  }
+  
+  .plan-card:hover {
+      transform: scale(1.05); /* Zoom in effect */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for better effect */
+  }
+  .hover-item:hover {
+    background-color:$info;
+    color: white;
+}
+.hover-item a:hover {
+    color: white;
+}
+
+.btn-info {
+  transition: transform 0.3s ease;
+}
+
+.btn-info:hover {
+  transform: scale(1.1); /* Zoom in effect */
+}
+
+.btn-info:active {
+  transform: scale(0.9); /* Zoom out effect when clicked */
+}
+
+.hover-item {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.hover-item:hover {
+  
+    background-color: black;
+    color: white;
+    transform: translateX(10px); /* Move the item slightly to the right */
+}
+
+.hover-item a {
+  transition: color 0.3s ease;
+}
+
+.hover-item a:hover {
+  color: white;
+}
+
+/* Card Styling */
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #004a8f; /* Dark blue color */
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+.badge {
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+}
+
+.btn-secondary {
+  background-color: #2d2d2d;
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #1a1a1a;
+}
+/* Footer Top Section */
+footer .footer-top {
+  background: linear-gradient(45deg, #000000, #333333);
+  color: white;
+  padding: 40px 0;
+}
+
+footer .footer-top h5 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+footer .footer-top ul {
+  list-style: none;
+  padding: 0;
+}
+
+footer .footer-top ul li {
+  margin-bottom: 0.5rem;
+}
+
+footer .footer-top ul li a {
+  color: #ffcc00;;
+  text-decoration: none;
+}
+
+footer .footer-top ul li a:hover {
+  color: #ffcc00;
+}
+
+/* Social Media Icon Style */
+.icon-yellow {
+  color: #ffcc00;
+}
+
+/* Footer Bottom Section */
+footer .footer-bottom {
+  background-color: #222222;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+}
+
+/* Newsletter Form Styles */
+.newsletter-form input[type="email"] {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.newsletter-form button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #e8d792;
+  color: #000;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Subscription Message Styles */
+.subscription-message {
+  display: none;
+  color:white;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Extra Content Styles */
+.newsletter-extra {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #cccccc;
+}
+
+
+
+
+@import "./node_modules/bootstrap/scss/bootstrap";

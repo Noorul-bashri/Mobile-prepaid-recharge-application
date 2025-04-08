@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: linear-gradient(120deg, #7f7fd5, #86a8e7, #91eae4);
+      height: 100vh;
+    }
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      padding: 3rem;
+      margin-top: 10%;
+      width: 450px;
+      min-height: 400px;
+    }
+    .password-toggle {
+      cursor: pointer;
+      position: absolute;
+      right: 15px;
+      top: 38px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container d-flex justify-content-center align-items-center" style="height:100vh;">
+    <div class="login-card">
+      <h2 class="text-center mb-4">Admin Login</h2>
+      <form id="loginForm">
+        <div class="mb-3 position-relative">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" id="username" class="form-control" required>
+        </div>
+        <div class="mb-3 position-relative">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" required>
+          <i class="bi bi-eye-slash password-toggle" onclick="togglePassword()"></i>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login as Admin</button>
+      </form>
+      <div id="error-alert" class="alert alert-danger mt-3" role="alert" style="display:none;"></div>
+      <div id="success-alert" class="alert alert-success mt-3" role="alert" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const toggleIcon = document.querySelector('.password-toggle');
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+      } else {
+        passwordField.type = 'password';
+        toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+      }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // Hide both alerts at the start
+      document.getElementById('error-alert').style.display = 'none';
+      document.getElementById('success-alert').style.display = 'none';
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        const errorAlert = document.getElementById('error-alert');
+        errorAlert.textContent = 'Please fill in all fields';
+        errorAlert.style.display = 'block';
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:8081/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('adminToken', data.token);
+          const successAlert = document.getElementById('success-alert');
+          successAlert.textContent = 'Login successful. Redirecting to the admin dashboard...';
+          successAlert.style.display = 'block';
+          setTimeout(() => {
+            window.location.href = 'admin.html';
+          }, 200); 
+        } else {
+          const errorAlert = document.getElementById('error-alert');
+          errorAlert.textContent = data.message || 'Login failed';
+          errorAlert.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        const errorAlert = document.getElementById('error-alert');
+        errorAlert.textContent = 'An error occurred during login';
+        errorAlert.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

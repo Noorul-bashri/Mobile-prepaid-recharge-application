@@ -1,0 +1,2552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Mobi-Comm</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary-color:  #4f3fb6;
+      --primary-light:  #b37be4;
+      --primary-dark: #56c3e1;
+      --secondary-color: #ec4899;
+      --accent-color: #f97316;
+      --success-color: #22c55e;
+      --warning-color: #eab308;
+      --danger-color: #ef4444;
+      --light-color: #f9fafb;
+      --dark-color: #1f2937;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 2000;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      display: none;
+      min-width: 300px;
+    }
+
+    .notification.success {
+      background-color: var(--success-color);
+      color: white;
+    }
+
+    .notification.error {
+      background-color: var(--danger-color);
+      color: white;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9fafb;
+      overflow-x: hidden;
+      color: var(--gray-700);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: rgb(10, 10, 10);
+      padding: 1rem 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: rgb(21, 20, 20);
+      text-decoration: none;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .header-logo i {
+      margin-right: 0.5rem;
+      font-size: 1.8rem;
+    }
+
+    .sidebar {
+      width: 280px;
+      background:#080228;
+      min-height: 100vh;
+      transition: all 0.3s;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      overflow-y: auto;
+      padding-top: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar .nav-link {
+      color:white;
+      padding: 0.75rem 1.25rem;
+      margin: 0.25rem 0.75rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+    
+
+    }
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      color: white;
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+
+    .sidebar .nav-link i {
+      margin-right: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .sidebar-profile {
+      padding: 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(237, 230, 230, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-profile img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid rgba(230, 217, 217, 0.2);
+      padding: 3px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-profile h5 {
+      color: white;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    .main-content {
+      margin-left: 280px;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+
+    .banner {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+      padding: 2.5rem 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      color: rgb(12, 12, 12);
+      box-shadow: 0 10px 20px rgba(126, 34, 206, 0.15);
+    }
+
+    .banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IGlkPSJwYXR0ZXJuLWJhY2tncm91bmQiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InRyYW5zcGFyZW50Ij48L3JlY3Q+PHBhdGggZD0iTSAwIDIwIEwgNDAgMjAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva2Utd2lkdGg9IjIiPjwvcGF0aD48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybikiPjwvcmVjdD48L3N2Zz4=');
+      opacity: 0.2;
+      z-index: 1;
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .stats-card {
+      border-radius: 1rem;
+      border: none;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      background-color: white;
+    }
+
+    .stats-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .stats-card .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem;
+    }
+
+    .stats-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .row.g-4.mb-4 {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .row.g-4.mb-4 .col-md-3 {
+      display: flex;
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .table-container .card-header {
+      background-color: #dde3ea;
+      color: rgb(11, 11, 11);
+      border-bottom: none;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-container .table {
+      margin-bottom: 0;
+    }
+
+    .table-container .table thead th {
+      background-color:#657ed8;
+      color: var(--gray-800);
+      border: none;
+      font-weight: 600;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .table-container .table td {
+      vertical-align: middle;
+      padding: 0.75rem 1rem;
+      color: var(--gray-700);
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: var(--gray-100);
+    }
+
+    .table-striped tbody tr:hover {
+      background-color: var(--gray-200);
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      box-shadow: 0 2px 5px rgba(126, 34, 206, 0.2);
+      color: rgb(7, 6, 6);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      border-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(126, 34, 206, 0.3);
+    }
+
+    .btn-info {
+      background-color: var(--accent-color);
+      border-color: var(--accent-color);
+      color: white;
+      box-shadow: 0 2px 5px rgba(249, 115, 22, 0.2);
+    }
+
+    .btn-info:hover {
+      background-color: #ea580c;
+      border-color: #ea580c;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
+    }
+
+    .btn-warning {
+      background-color: var(--warning-color);
+      border-color: var(--warning-color);
+      color: var(--dark-color);
+      box-shadow: 0 2px 5px rgba(234, 179, 8, 0.2);
+    }
+
+    .btn-warning:hover {
+      background-color: #ca8a04;
+      border-color: #ca8a04;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(234, 179, 8, 0.3);
+    }
+
+    .btn-danger {
+      background-color: var(--danger-color);
+      border-color: var(--danger-color);
+      box-shadow: 0 2px 5px rgba(239, 68, 68, 0.2);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+      border-color: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-add-plan {
+      background-color: var(--success-color);
+      border-color: var(--success-color);
+      color: white;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+      transition: all 0.3s;
+      animation: pulse 2s infinite;
+    }
+
+    .btn-add-plan:hover {
+      background-color: #16a34a;
+      border-color: #16a34a;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(34, 197, 94, 0.4);
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .sidebar {
+        margin-left: -280px;
+      }
+
+      .sidebar.active {
+        margin-left: 0;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .toggle-sidebar {
+        display: block !important;
+      }
+    }
+
+    .toggle-sidebar {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1050;
+      display: none;
+    }
+
+    .chart-container {
+      position: relative;
+      margin: auto;
+      height: 300px;
+      width: 100%;
+    }
+
+    .badge-status-active {
+      background-color: var(--success-color);
+      color: white;
+      font-weight: 500;
+      padding: 0.35rem 0.65rem;
+      border-radius: 0.5rem;
+    }
+
+    .badge-status-inactive {
+      background-color: var(--danger-color);
+      color: white;
+      font-weight: 500;
+      padding: 0.35rem 0.65rem;
+      border-radius: 0.5rem;
+    }
+
+    /* Search input styling */
+    .search-container {
+      position: relative;
+      width: 300px;
+    }
+
+    .search-container .form-control {
+      padding-left: 2.5rem;
+      border-radius: 2rem;
+      border: 1px solid var(--gray-300);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-container .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(126, 34, 206, 0.25);
+    }
+
+    .search-container .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+    }
+
+    .search-container .btn {
+      border-radius: 2rem;
+      padding: 0.375rem 1rem;
+    }
+
+    /* Modal styling */
+    .modal-content {
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: linear-gradient(to right, var(--primary-light), var(--primary-color));
+      color: white;
+      border-bottom: none;
+      padding: 1.5rem;
+    }
+
+    .modal-header .btn-close {
+      color: white;
+      opacity: 0.8;
+      box-shadow: none;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-footer {
+      border-top: 1px solid var(--gray-200);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--gray-300);
+      transition: all 0.3s;
+      color: var(--gray-800);
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(126, 34, 206, 0.25);
+    }
+
+    /* User info in transaction modal */
+    .user-info {
+      background-color: var(--gray-100);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .user-info h6 {
+      color: var(--gray-800);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .user-info p {
+      color: var(--gray-700);
+      margin-bottom: 0.25rem;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Pagination styling */
+    .pagination {
+      margin-top: 1.5rem;
+      justify-content: center;
+    }
+
+    .pagination .page-item .page-link {
+      color: var(--primary-color);
+      border-radius: 0.5rem;
+      margin: 0 0.25rem;
+      border: 1px solid var(--gray-300);
+    }
+
+    .pagination .page-item.active .page-link {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+
+    .pagination .page-item .page-link:hover {
+      background-color: var(--gray-100);
+    }
+
+    .pagination .page-item.active .page-link:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Plan status filter */
+    .plan-status-filter {
+      display: flex;
+      margin-bottom: 1rem;
+      background-color: var(--gray-100);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      width: fit-content;
+    }
+
+    .plan-status-filter button {
+      padding: 0.5rem 1.5rem;
+      border: none;
+      background: transparent;
+      color: var(--gray-700);
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .plan-status-filter button.active {
+      background-color:#56c3e1;
+      color: rgb(6, 6, 6);
+    }
+
+    /* Analytics cards */
+    .analytics-card {
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+      background-color: white;
+    }
+
+    .analytics-card .card-header {
+      background: linear-gradient(to right, var(--primary-light), var(--primary-color));
+      color: white;
+      padding: 1.25rem 1.5rem;
+      border-bottom: none;
+    }
+
+    .analytics-card .card-body {
+      padding: 1.5rem;
+    }
+
+    .analytics-stat {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background-color: var(--gray-100);
+      border-radius: 0.5rem;
+    }
+
+    .analytics-stat-icon {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-right: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .analytics-stat-content h4 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    .analytics-stat-content p {
+      margin: 0;
+      color: var(--gray-600);
+    }
+
+    /* Scrollable tables */
+    .table-responsive {
+      overflow-x: auto;
+      max-height: 400px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary-light) var(--gray-200);
+    }
+
+    .table-responsive::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+      background: var(--gray-200);
+      border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+      background-color: var(--primary-light);
+      border-radius: 4px;
+    }
+
+    /* Table styling for better visibility */
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .table th {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .table td {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Analytics dashboard enhancements */
+    .analytics-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .summary-card-title {
+      font-size: 0.9rem;
+      color: var(--gray-500);
+      margin-bottom: 0.5rem;
+    }
+
+    .summary-card-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .summary-card-change {
+      display: flex;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .change-positive {
+      color: var(--success-color);
+    }
+
+    .change-negative {
+      color: var(--danger-color);
+    }
+
+    .trend-indicator {
+      margin-right: 0.25rem;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .data-table th, .data-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    .data-table th {
+      background-color: var(--gray-100);
+      font-weight: 600;
+      color: var(--gray-700);
+    }
+
+    .data-table tr:nth-child(even) {
+      background-color: var(--gray-50);
+    }
+
+    .data-table tr:hover {
+      background-color: var(--gray-200);
+    }
+
+    /* Forecast section */
+    .forecast-section {
+      margin-top: 2rem;
+    }
+
+    .forecast-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .forecast-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    .forecast-period {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .forecast-period-btn {
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.5rem;
+      background-color: var(--gray-100);
+      color: var(--gray-700);
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .forecast-period-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    /* Customer insights */
+    .customer-insights {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .insight-card {
+      background: white;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .insight-card-header {
+      padding: 1.25rem;
+      background-color: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .insight-card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin: 0;
+    }
+
+    .insight-card-body {
+      padding: 1.25rem;
+    }
+
+    .insight-stat {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .insight-stat-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-right: 1rem;
+      font-size: 1.25rem;
+      background-color: var(--gray-100);
+      color: var(--primary-color);
+    }
+
+    .insight-stat-content h5 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    .insight-stat-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Toggle Button -->
+  <button class="btn btn-primary toggle-sidebar" id="toggleSidebar">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <img src="/Images/profile.png" alt="Admin Profile" class="img-fluid">
+      <h5>Admin Panel</h5>
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+        <i class="bi bi-grid-1x2-fill"></i> <b>Dashboard</b>
+      </a>
+      <a class="nav-link" href="#subscribers" data-bs-toggle="tab">
+        <i class="bi bi-people-fill"></i> <b>Subscribers</b>
+      </a>
+      <a class="nav-link" href="#plans" data-bs-toggle="tab">
+        <i class="bi bi-card-list"></i> <b> Plans</b>
+            </a>
+      <a class="nav-link" href="#analytics" data-bs-toggle="tab">
+        <i class="bi bi-bar-chart-fill"></i> <b>Analytics</b>
+      </a>
+      <a class="nav-link" href="#" id="logoutBtn">
+        <i class="bi bi-box-arrow-left"></i> <b>Logout</b>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="banner">
+      <div class="banner-content">
+        <h2>Mobi-Comm Admin Dashboard</h2>
+        <p class="mb-0">Manage subscribers, plans, and monitor performance metrics.</p>
+      </div>
+    </div>
+
+    <div class="tab-content">
+      <!-- Dashboard Tab -->
+      <div class="tab-pane fade show active" id="dashboard">
+        <!-- Dashboard Stats -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-3">
+            <div class="stats-card card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-muted mb-2">Total Subscribers</h6>
+                    <h3 class="mb-0 text-dark" id="totalSubscribers">0</h3>
+                  </div>
+                  <div class="stats-icon bg-primary bg-opacity-10 text-primary">
+                    <i class="bi bi-people-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-muted mb-2">Subscribers with Expiring Plan(3 Days)</h6>
+                    <h3 class="mb-0 text-dark" id="expiringSubscribers">0</h3>
+                  </div>
+                  <div class="stats-icon bg-warning bg-opacity-10 text-warning">
+                    <i class="bi bi-clock-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-muted mb-2">Active Plans</h6>
+                    <h3 class="mb-0 text-dark" id="activePlans">0</h3>
+                  </div>
+                  <div class="stats-icon bg-success bg-opacity-10 text-success">
+                    <i class="bi bi-check-circle-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-muted mb-2">Most Popular Plan</h6>
+                    <h3 class="mb-0 text-dark" id="mostPopularPlan">-</h3>
+                  </div>
+                  <div class="stats-icon bg-accent bg-opacity-10" style="color: var(--accent-color);">
+                    <i class="bi bi-trophy-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expiring Subscribers -->
+        <div class="card table-container mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Subscribers with Expiring Plans (Next 3 Days)</h5>
+            <span class="badge bg-warning">Next 3 Days</span>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover" id="expiringSubscribersTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Plan</th>
+                    <th>Expiry Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="card table-container">
+          <div class="card-header">
+            <h5 class="mb-0">Recent Transactions</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover" id="recentTransactionsTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Mobile Number</th>
+                    <th>Plan</th>
+                    <th>Amount</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Expiry Date</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subscribers Tab -->
+      <div class="tab-pane fade" id="subscribers">
+        <div class="card table-container">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">All Subscribers</h5>
+            <div class="search-container">
+              <i class="bi bi-search search-icon"></i>
+              <input type="text" class="form-control" id="subscriberSearch" placeholder="Search by name, email or phone...">
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover" id="allSubscribersTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Current Plan</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <nav aria-label="Page navigation" class="mt-3">
+              <ul class="pagination justify-content-center" id="subscribersPagination">
+                <!-- Pagination will be added dynamically -->
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plans Tab -->
+      <div class="tab-pane fade" id="plans">
+        <div class="card table-container">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Plan Management</h5>
+            <div class="d-flex">
+              <div class="search-container me-2">
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" class="form-control" id="planSearch" placeholder="Search plans...">
+              </div>
+              <button class="btn btn-add-plan" data-bs-toggle="modal" data-bs-target="#addPlanModal">
+                <i class="bi bi-plus-lg"></i> Add Plan
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="plan-status-filter mb-3">
+              <button class="active" data-status="all">All Plans</button>
+              <button data-status="active">Active</button>
+              <button data-status="inactive">Inactive</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-striped table-hover" id="plansTable">
+                <thead>
+                  <tr>
+                    <th>Plan Name</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Data Volume</th>
+                    <th>Validity</th>
+                    <th>Benefits</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <nav aria-label="Page navigation" class="mt-3">
+              <ul class="pagination justify-content-center" id="plansPagination">
+                <!-- Pagination will be added dynamically -->
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Tab -->
+      <div class="tab-pane fade" id="analytics">
+        <!-- Analytics Summary Cards -->
+        <div class="analytics-summary mb-4">
+          <div class="summary-card">
+            <div class="summary-card-title">Total Revenue</div>
+            <div class="summary-card-value" id="totalRevenueDisplay">₹0</div>
+            <div class="summary-card-change change-positive">
+              <i class="bi bi-arrow-up-right trend-indicator"></i>
+              <span id="revenueGrowth">0%</span> vs last month
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card-title">Active Subscribers</div>
+            <div class="summary-card-value" id="activeSubscribersDisplay">0</div>
+            <div class="summary-card-change change-positive">
+              <i class="bi bi-arrow-up-right trend-indicator"></i>
+              <span id="subscriberGrowth">0%</span> vs last month
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card-title">Avg. Transaction Value</div>
+            <div class="summary-card-value" id="avgTransactionValueDisplay">₹0</div>
+            <div class="summary-card-change" id="avgValueTrend">
+              <i class="bi bi-dash trend-indicator"></i>
+              <span>0%</span> vs last month
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card-title">Conversion Rate</div>
+            <div class="summary-card-value" id="conversionRateDisplay">0%</div>
+            <div class="summary-card-change" id="conversionTrend">
+              <i class="bi bi-dash trend-indicator"></i>
+              <span>0%</span> vs last month
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="analytics-card">
+              <div class="card-header">
+                <h5 class="mb-0">Key Performance Metrics</h5>
+              </div>
+              <div class="card-body">
+                <div class="analytics-stat">
+                  <div class="analytics-stat-icon" style="background-color: rgba(34, 197, 94, 0.1); color: var(--success-color);">
+                    <i class="bi bi-graph-up-arrow"></i>
+                  </div>
+                  <div class="analytics-stat-content">
+                    <h4 id="totalRevenue">₹0</h4>
+                    <p>Total Revenue</p>
+                  </div>
+                </div>
+                <div class="analytics-stat">
+                  <div class="analytics-stat-icon" style="background-color: rgba(249, 115, 22, 0.1); color: var(--accent-color);">
+                    <i class="bi bi-currency-rupee"></i>
+                  </div>
+                  <div class="analytics-stat-content">
+                    <h4 id="avgTransactionValue">₹0</h4>
+                    <p>Average Transaction Value</p>
+                  </div>
+                </div>
+                <div class="analytics-stat">
+                  <div class="analytics-stat-icon" style="background-color: rgba(126, 34, 206, 0.1); color: var(--primary-color);">
+                    <i class="bi bi-repeat"></i>
+                  </div>
+                  <div class="analytics-stat-content">
+                    <h4 id="repeatCustomerRate">0%</h4>
+                    <p>Repeat Customer Rate</p>
+                  </div>
+                </div>
+                <div class="analytics-stat">
+                  <div class="analytics-stat-icon" style="background-color: rgba(236, 72, 153, 0.1); color: var(--secondary-color);">
+                    <i class="bi bi-calendar-check"></i>
+                  </div>
+                  <div class="analytics-stat-content">
+                    <h4 id="avgPlanDuration">0 days</h4>
+                    <p>Average Plan Duration</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="analytics-card">
+              <div class="card-header">
+                <h5 class="mb-0">Plan Distribution</h5>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <canvas id="planDistributionChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="analytics-card">
+              <div class="card-header">
+                <h5 class="mb-0">Monthly Subscriptions</h5>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <canvas id="monthlySubscriptionsChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="analytics-card">
+              <div class="card-header">
+                <h5 class="mb-0">Revenue Trends</h5>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <canvas id="revenueTrendsChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- New Analytics Section: Customer Insights -->
+          <div class="col-md-12">
+            <div class="analytics-card">
+              <div class="card-header">
+                <h5 class="mb-0">Customer Insights</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="insight-card">
+                      <div class="insight-card-header">
+                        <h6 class="insight-card-title">Subscriber Demographics</h6>
+                      </div>
+                      <div class="insight-card-body">
+                        <div class="chart-container" style="height: 200px;">
+                          <canvas id="demographicsChart"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="insight-card">
+                      <div class="insight-card-header">
+                        <h6 class="insight-card-title">Plan Popularity</h6>
+                      </div>
+                      <div class="insight-card-body">
+                        <div class="table-responsive" style="max-height: 200px;">
+                          <table class="table table-sm" id="planPopularityTable">
+                            <thead>
+                              <tr>
+                                <th>Plan</th>
+                                <th>Subscribers</th>
+                                <th>Trend</th>
+                              </tr>
+                            </thead>
+                            <tbody></tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="insight-card">
+                      <div class="insight-card-header">
+                        <h6 class="insight-card-title">Retention Rate</h6>
+                      </div>
+                      <div class="insight-card-body">
+                        <div class="chart-container" style="height: 200px;">
+                          <canvas id="retentionChart"></canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- New Analytics Section: Revenue Forecast -->
+          <div class="col-md-12">
+         
+          
+          <div class="col-md-12">
+            <div class="analytics-card">
+              <div class="card-header">
+                <h5 class="mb-0">Category Performance</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="chart-container">
+                      <canvas id="categoryPerformanceChart"></canvas>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <h6 class="mb-3 text-dark">Top Performing Categories</h6>
+                    <div id="categoryRankings">
+                      <!-- Will be populated dynamically -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Plan Modal -->
+  <div class="modal fade" id="addPlanModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Plan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addPlanForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Plan Name</label>
+                <input type="text" class="form-control" name="planName" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-select" name="planCategory" required>
+                  <option value="">Select Category</option>
+                  <option value="popular">Popular</option>
+                  <option value="validity">Validity</option>
+                  <option value="data">Data</option>
+                  <option value="topup">Topup</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="annual">Annual</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Amount (₹)</label>
+                <input type="number" step="0.01" class="form-control" name="amount" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Validity (Days)</label>
+                <input type="number" class="form-control" name="validityDays">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Data Volume</label>
+                <input type="text" class="form-control" name="dataVolume" placeholder="e.g. 1.5 GB/day">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-select" name="status" required>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Benefits</label>
+              <textarea class="form-control" name="benefits" rows="2" placeholder="e.g. Unlimited calls, 100 SMS/day"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Plan Description</label>
+              <textarea class="form-control" name="planDescription" rows="3" placeholder="Detailed description of the plan"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="savePlanBtn">Save Plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Plan Modal -->
+  <div class="modal fade" id="editPlanModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Plan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editPlanForm">
+            <input type="hidden" name="planId" id="editPlanId">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Plan Name</label>
+                <input type="text" class="form-control" name="planName" id="editPlanName" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-select" name="planCategory" id="editPlanCategory" required>
+                  <option value="popular">Popular</option>
+                  <option value="validity">Validity</option>
+                  <option value="data">Data</option>
+                  <option value="topup">Topup</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="annual">Annual</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Amount (₹)</label>
+                <input type="number" step="0.01" class="form-control" name="amount" id="editPlanAmount" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Validity (Days)</label>
+                <input type="number" class="form-control" name="validityDays" id="editPlanValidityDays">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Data Volume</label>
+                <input type="text" class="form-control" name="dataVolume" id="editPlanDataVolume">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-select" name="status" id="editPlanStatus" required>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Benefits</label>
+              <textarea class="form-control" name="benefits" id="editPlanBenefits" rows="2"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Plan Description</label>
+              <textarea class="form-control" name="planDescription" id="editPlanDescription" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="updatePlanBtn">Update Plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transaction History Modal -->
+  <div class="modal fade" id="transactionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Transaction History</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="user-info mb-3">
+            <h6 id="transactionUserName">User Name</h6>
+            <p class="mb-0" id="transactionUserEmail"></p>
+            <p class="mb-0" id="transactionUserPhone"></p>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover" id="transactionTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Plan</th>
+                  <th>Payment Method</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Expiry Date</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const toggleSidebarBtn = document.getElementById('toggleSidebar');
+      const sidebar = document.getElementById('sidebar');
+      toggleSidebarBtn.addEventListener('click', function () {
+        sidebar.classList.toggle('active');
+      });
+
+      let usersData = [];
+      let plansData = [];
+      let transactionsData = [];
+      let expiringTransactions = [];
+      let currentPlanFilter = 'all';
+
+      const API_BASE_URL = 'http://localhost:8081/api';
+
+      function showNotification(message, type = 'success') {
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = 'block';
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 3000);
+      }
+      function getToken() {
+        return localStorage.getItem('adminToken');
+      }
+
+      async function loadAllData() {
+        const token = getToken();
+        if (!token) {
+          alert('Please log in first.');
+          window.location.href = 'Adminlogin.html';
+          return;
+        }
+
+        try {
+          const usersResponse = await fetch(`${API_BASE_URL}/users`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!usersResponse.ok) throwError(usersResponse);
+          usersData = await usersResponse.json();
+
+          const plansResponse = await fetch(`${API_BASE_URL}/plans`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!plansResponse.ok) throwError(plansResponse);
+          plansData = await plansResponse.json();
+
+          const recentTransactionsResponse = await fetch(`${API_BASE_URL}/transactions/recent?limit=10`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!recentTransactionsResponse.ok) throwError(recentTransactionsResponse);
+          transactionsData = await recentTransactionsResponse.json();
+
+          const expiringResponse = await fetch(`${API_BASE_URL}/transactions/expiring`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!expiringResponse.ok) throwError(expiringResponse);
+          expiringTransactions = await expiringResponse.json();
+
+          updateDashboard();
+          populateExpiringSubscribersTable();
+          populateRecentTransactionsTable();
+          populateAllSubscribersTable();
+          populatePlansTable();
+          initializeCharts();
+          updateAnalyticsMetrics();
+          initializeAdvancedAnalytics();
+        } catch (err) {
+          console.error('Error loading data:', err);
+          showNotification('Failed to load dashboard data', 'error');
+        }
+      }
+
+      async function throwError(response) {
+        if (response.status === 401) {
+          alert('Session expired. Please log in again.');
+          localStorage.removeItem('adminToken');
+          window.location.href = 'Adminlogin.html';
+          throw new Error('Unauthorized');
+        }
+        throw new Error(await response.text());
+      }
+
+      function calculateExpiryDate(transactionDate, validityDays) {
+        if (!transactionDate || validityDays == null) return 'N/A';
+        const date = new Date(transactionDate);
+        date.setDate(date.getDate() + validityDays);
+        return date.toLocaleDateString();
+      }
+
+      function updateDashboard() {
+        document.getElementById('totalSubscribers').textContent = usersData.length || 0;
+
+        const expiringUsers = new Set(expiringTransactions.map(t => t.user.id));
+        document.getElementById('expiringSubscribers').textContent = expiringUsers.size;
+
+        const activePlansCount = plansData.filter(plan => 
+          plan.status && plan.status.toLowerCase() === 'active'
+        ).length;
+        document.getElementById('activePlans').textContent = activePlansCount;
+
+        const planCounts = {};
+        transactionsData.forEach(t => {
+          const planName = t.plan ? t.plan.planName : 'N/A';
+          planCounts[planName] = (planCounts[planName] || 0) + 1;
+        });
+        let max = 0;
+        let bestPlan = '-';
+        for (const [planName, count] of Object.entries(planCounts)) {
+          if (count > max) {
+            max = count;
+            bestPlan = planName;
+          }
+        }
+        document.getElementById('mostPopularPlan').textContent = bestPlan;
+      }
+
+      function populateExpiringSubscribersTable() {
+        const tbody = document.querySelector('#expiringSubscribersTable tbody');
+        tbody.innerHTML = '';
+        if (!expiringTransactions.length) {
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center">No subscribers with expiring plans</td></tr>';
+          return;
+        }
+
+        expiringTransactions.forEach(tx => {
+          const user = tx.user || { fullName: 'Unknown', phone: 'N/A', id: null };
+          const plan = tx.plan ? tx.plan.planName : 'N/A';
+          const expiryDate = calculateExpiryDate(tx.transactionDate, tx.plan?.validityDays);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${user.fullName}</td>
+            <td>${user.phone}</td>
+            <td>${plan}</td>
+            <td>${expiryDate}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-primary view-transactions" data-user-id="${user.id}">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-info notify-user" data-user-id="${user.id}">
+                  <i class="bi bi-bell"></i>
+                </button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.querySelectorAll('.view-transactions').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const userId = btn.getAttribute('data-user-id');
+            const user = usersData.find(u => u.id == userId);
+            if (user) showTransactionHistory(user);
+          });
+        });
+
+        document.querySelectorAll('.notify-user').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const userId = btn.getAttribute('data-user-id');
+            const token = getToken();
+            try {
+              const res = await fetch(`${API_BASE_URL}/admin/notify-expiring`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ userId: Number(userId) })
+              });
+              if (!res.ok) throw new Error(await res.text());
+              alert('Notification sent successfully');
+            } catch (err) {
+              console.error('Error sending notification:', err);
+              alert('Failed to send notification: ' + err.message);
+            }
+          });
+        });
+      }
+
+      function populateRecentTransactionsTable() {
+        const tbody = document.querySelector('#recentTransactionsTable tbody');
+        tbody.innerHTML = '';
+        if (!transactionsData.length) {
+          tbody.innerHTML = '<tr><td colspan="8" class="text-center">No recent transactions</td></tr>';
+          return;
+        }
+        transactionsData.forEach(tx => {
+          const expiryDate = calculateExpiryDate(tx.transactionDate, tx.plan?.validityDays);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${new Date(tx.transactionDate).toLocaleDateString()}</td>
+            <td>${tx.user ? tx.user.fullName : 'Unknown'}</td>
+            <td>${tx.user ? tx.user.phone : 'N/A'}</td>
+            <td>${tx.plan ? tx.plan.planName : 'N/A'}</td>
+            <td>${tx.amount != null ? `₹${tx.amount.toFixed(2)}` : 'N/A'}</td>
+            <td>${tx.paymentMethod || 'N/A'}</td>
+            <td><span class="badge ${tx.transactionStatus === 'SUCCESS' ? 'badge-status-active' : 'badge-status-inactive'}">${tx.transactionStatus || 'PENDING'}</span></td>
+            <td>${expiryDate}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function populateAllSubscribersTable() {
+        const tbody = document.querySelector('#allSubscribersTable tbody');
+        tbody.innerHTML = '';
+        if (!usersData.length) {
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center">No subscribers found</td></tr>';
+          return;
+        }
+        
+        // Filter subscribers based on search
+        const searchTerm = document.getElementById('subscriberSearch').value.toLowerCase();
+        const filteredUsers = searchTerm ? 
+          usersData.filter(user => 
+            user.fullName?.toLowerCase().includes(searchTerm) || 
+            user.email?.toLowerCase().includes(searchTerm) || 
+            user.phone?.toLowerCase().includes(searchTerm)
+          ) : usersData;
+        
+        if (!filteredUsers.length) {
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center">No matching subscribers found</td></tr>';
+          return;
+        }
+        
+        filteredUsers.forEach(u => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${u.fullName}</td>
+            <td>${u.email || 'N/A'}</td>
+            <td>${u.phone}</td>
+            <td>${u.currentPlan || 'No active plan'}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-primary view-transactions" data-user-id="${u.id}">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        
+        document.querySelectorAll('.view-transactions').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const userId = btn.getAttribute('data-user-id');
+            const user = usersData.find(u => u.id == userId);
+            if (user) showTransactionHistory(user);
+          });
+        });
+      }
+
+      function populatePlansTable() {
+        const tbody = document.querySelector('#plansTable tbody');
+        tbody.innerHTML = '';
+        if (!plansData.length) {
+          tbody.innerHTML = '<tr><td colspan="9" class="text-center">No plans found</td></tr>';
+          return;
+        }
+        
+        // Filter plans based on search and status
+        const searchTerm = document.getElementById('planSearch').value.toLowerCase();
+        let filteredPlans = plansData;
+        
+        // First filter by status
+        if (currentPlanFilter !== 'all') {
+          filteredPlans = filteredPlans.filter(plan => 
+            plan.status && plan.status.toLowerCase() === currentPlanFilter.toLowerCase()
+          );
+        }
+        
+        // Then filter by search term
+        if (searchTerm) {
+          filteredPlans = filteredPlans.filter(plan => 
+            plan.planName?.toLowerCase().includes(searchTerm) || 
+            plan.planCategory?.toLowerCase().includes(searchTerm) ||
+            plan.dataVolume?.toLowerCase().includes(searchTerm) ||
+            plan.benefits?.toLowerCase().includes(searchTerm)
+          );
+        }
+        
+        if (!filteredPlans.length) {
+          tbody.innerHTML = '<tr><td colspan="9" class="text-center">No matching plans found</td></tr>';
+          return;
+        }
+        
+        filteredPlans.forEach(plan => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${plan.planName || 'N/A'}</td>
+            <td>${plan.planCategory || 'N/A'}</td>
+            <td>₹${plan.amount != null ? plan.amount.toFixed(2) : 'N/A'}</td>
+            <td>${plan.dataVolume || 'N/A'}</td>
+            <td>${plan.validityDays != null ? plan.validityDays : 'N/A'}</td>
+            <td>${plan.benefits || 'N/A'}</td>
+            <td>${plan.planDescription ? (plan.planDescription.length > 30 ? plan.planDescription.substring(0, 30) + '...' : plan.planDescription) : 'N/A'}</td>
+            <td>
+              <span class="badge ${
+                plan.status === 'Inactive' ? 'badge-status-inactive' : 'badge-status-active'
+              }">${plan.status || 'Active'}</span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-warning edit-plan" data-plan='${JSON.stringify(plan)}'>
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-danger delete-plan" data-plan-id="${plan.id}">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        
+        document.querySelectorAll('.edit-plan').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const plan = JSON.parse(btn.getAttribute('data-plan'));
+            openEditPlanModal(plan);
+          });
+        });
+        
+        document.querySelectorAll('.delete-plan').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const planId = btn.getAttribute('data-plan-id');
+            deletePlan(planId);
+          });
+        });
+      }
+
+      async function showTransactionHistory(user) {
+        document.getElementById('transactionUserName').textContent = user.fullName;
+        document.getElementById('transactionUserEmail').textContent = user.email || 'N/A';
+        document.getElementById('transactionUserPhone').textContent = user.phone;
+        const tbody = document.querySelector('#transactionTable tbody');
+        tbody.innerHTML = '';
+
+        const token = getToken();
+        try {
+          const res = await fetch(`${API_BASE_URL}/transactions/user/${user.id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (!res.ok) throw new Error(await res.text());
+          const transactions = await res.json();
+          if (!transactions.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center">No transaction history</td></tr>';
+          } else {
+            transactions.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate));
+            transactions.forEach(tx => {
+              const expiryDate = calculateExpiryDate(tx.transactionDate, tx.plan?.validityDays);
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>${new Date(tx.transactionDate).toLocaleDateString()}</td>
+                <td>${tx.plan ? tx.plan.planName : 'N/A'}</td>
+                <td>${tx.paymentMethod || 'N/A'}</td>
+                <td>${tx.amount != null ? `₹${tx.amount.toFixed(2)}` : 'N/A'}</td>
+                <td><span class="badge ${tx.transactionStatus === 'SUCCESS' ? 'badge-status-active' : 'badge-status-inactive'}">${tx.transactionStatus || 'PENDING'}</span></td>
+                <td>${expiryDate}</td>
+              `;
+              tbody.appendChild(tr);
+            });
+          }
+          new bootstrap.Modal(document.getElementById('transactionModal')).show();
+        } catch (err) {
+          console.error('Error fetching transactions:', err);
+          alert('Failed to fetch transaction history: ' + err.message);
+        }
+      }
+
+      function openEditPlanModal(plan) {
+        document.getElementById('editPlanId').value = plan.id || '';
+        document.getElementById('editPlanName').value = plan.planName || '';
+        document.getElementById('editPlanCategory').value = plan.planCategory || 'popular';
+        document.getElementById('editPlanAmount').value = plan.amount != null ? plan.amount : '';
+        document.getElementById('editPlanDataVolume').value = plan.dataVolume || '';
+        document.getElementById('editPlanValidityDays').value = plan.validityDays != null ? plan.validityDays : '';
+        document.getElementById('editPlanStatus').value = plan.status || 'Active';
+        document.getElementById('editPlanBenefits').value = plan.benefits || '';
+        document.getElementById('editPlanDescription').value = plan.planDescription || '';
+        new bootstrap.Modal(document.getElementById('editPlanModal')).show();
+      }
+
+      document.getElementById('logoutBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        localStorage.removeItem('adminToken');
+        window.location.href = 'adminLogin.html';
+      });
+
+      async function deletePlan(planId) {
+        if (!confirm('Are you sure you want to delete this plan?')) return;
+        const token = getToken();
+        try {
+          const res = await fetch(`${API_BASE_URL}/plans/delete`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ id: planId.toString() })
+          });
+          const responseText = await res.text();
+          if (res.ok) {
+            alert('Plan deleted successfully!');
+            loadAllData();
+          } else {
+            throw new Error(responseText);
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Error deleting plan: ' + err.message);
+        }
+      }
+
+      document.getElementById('savePlanBtn').addEventListener('click', async () => {
+        const form = document.getElementById('addPlanForm');
+        const formData = new FormData(form);
+        const newPlan = {
+          planName: formData.get('planName'),
+          planCategory: formData.get('planCategory'),
+          amount: parseFloat(formData.get('amount')),
+          dataVolume: formData.get('dataVolume') || null,
+          validityDays: parseInt(formData.get('validityDays') || '0', 10),
+          benefits: formData.get('benefits') || null,
+          planDescription: formData.get('planDescription') || null,
+          status: formData.get('status')
+        };
+        const token = getToken();
+        try {
+          const res = await fetch(`${API_BASE_URL}/plans`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(newPlan)
+          });
+          if (!res.ok) throwError(res);
+          alert('Plan added successfully!');
+          bootstrap.Modal.getInstance(document.getElementById('addPlanModal')).hide();
+          form.reset();
+          loadAllData();
+        } catch (err) {
+          console.error('Error adding plan:', err);
+          alert('Error adding plan: ' + err.message);
+        }
+      });
+
+      document.getElementById('updatePlanBtn').addEventListener('click', async () => {
+        const form = document.getElementById('editPlanForm');
+        const formData = new FormData(form);
+        const updatedPlan = {
+          id: formData.get('planId'),
+          planName: formData.get('planName'),
+          planCategory: formData.get('planCategory'),
+          amount: parseFloat(formData.get('amount')),
+          dataVolume: formData.get('dataVolume') || null,
+          validityDays: parseInt(formData.get('validityDays') || '0', 10),
+          benefits: formData.get('benefits') || null,
+          planDescription: formData.get('planDescription') || null,
+          status: formData.get('status')
+        };
+        const token = getToken();
+        try {
+          const res = await fetch(`${API_BASE_URL}/plans/update`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(updatedPlan)
+          });
+          if (!res.ok) throwError(res);
+          alert('Plan updated successfully!');
+          bootstrap.Modal.getInstance(document.getElementById('editPlanModal')).hide();
+          loadAllData();
+        } catch (err) {
+          console.error('Error updating plan:', err);
+          alert('Error updating plan: ' + err.message);
+        }
+      });
+
+      // Search functionality for subscribers
+      document.getElementById('subscriberSearch').addEventListener('input', function() {
+        populateAllSubscribersTable();
+      });
+
+      // Search functionality for plans
+      document.getElementById('planSearch').addEventListener('input', function() {
+        populatePlansTable();
+      });
+
+      // Plan status filter
+      document.querySelectorAll('.plan-status-filter button').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.plan-status-filter button').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentPlanFilter = this.getAttribute('data-status');
+          populatePlansTable();
+        });
+      });
+
+      // Forecast period buttons
+      document.querySelectorAll('.forecast-period-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.forecast-period-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          const period = this.getAttribute('data-period');
+          updateForecastChart(period);
+        });
+      });
+
+      function updateAnalyticsMetrics() {
+        // Calculate total revenue
+        let totalRevenue = 0;
+        let successfulTransactions = 0;
+        transactionsData.forEach(tx => {
+          if (tx.amount && tx.transactionStatus === 'SUCCESS') {
+            totalRevenue += tx.amount;
+            successfulTransactions++;
+          }
+        });
+        
+        document.getElementById('totalRevenue').textContent = `₹${totalRevenue.toFixed(2)}`;
+        document.getElementById('totalRevenueDisplay').textContent = `₹${totalRevenue.toFixed(2)}`;
+        
+        // Calculate average transaction value
+        const avgValue = successfulTransactions > 0 ? totalRevenue / successfulTransactions : 0;
+        document.getElementById('avgTransactionValue').textContent = `₹${avgValue.toFixed(2)}`;
+        document.getElementById('avgTransactionValueDisplay').textContent = `₹${avgValue.toFixed(2)}`;
+        
+        // Calculate repeat customer rate
+        const uniqueCustomers = new Set();
+        const repeatCustomers = new Set();
+        
+        transactionsData.forEach(tx => {
+          if (tx.user && tx.user.id) {
+            if (uniqueCustomers.has(tx.user.id)) {
+              repeatCustomers.add(tx.user.id);
+            } else {
+              uniqueCustomers.add(tx.user.id);
+            }
+          }
+        });
+        
+        const repeatRate = uniqueCustomers.size > 0 ? 
+          (repeatCustomers.size / uniqueCustomers.size) * 100 : 0;
+        document.getElementById('repeatCustomerRate').textContent = `${repeatRate.toFixed(1)}%`;
+        
+        // Calculate average plan duration
+        let totalDuration = 0;
+        let plansWithDuration = 0;
+        
+        plansData.forEach(plan => {
+          if (plan.validityDays) {
+            totalDuration += plan.validityDays;
+            plansWithDuration++;
+          }
+        });
+        
+        const avgDuration = plansWithDuration > 0 ? totalDuration / plansWithDuration : 0;
+        document.getElementById('avgPlanDuration').textContent = `${Math.round(avgDuration)} days`;
+        
+        // Set active subscribers
+        document.getElementById('activeSubscribersDisplay').textContent = usersData.length;
+        
+        // Set random growth rates for demo purposes
+        document.getElementById('revenueGrowth').textContent = `${(Math.random() * 15 + 5).toFixed(1)}%`;
+        document.getElementById('subscriberGrowth').textContent = `${(Math.random() * 10 + 2).toFixed(1)}%`;
+        
+        const avgValueChange = (Math.random() * 10 - 5).toFixed(1);
+        const avgValueTrendEl = document.getElementById('avgValueTrend');
+        if (avgValueChange > 0) {
+          avgValueTrendEl.className = 'summary-card-change change-positive';
+          avgValueTrendEl.innerHTML = `<i class="bi bi-arrow-up-right trend-indicator"></i><span>${avgValueChange}%</span> vs last month`;
+        } else {
+          avgValueTrendEl.className = 'summary-card-change change-negative';
+          avgValueTrendEl.innerHTML = `<i class="bi bi-arrow-down-right trend-indicator"></i><span>${Math.abs(avgValueChange)}%</span> vs last month`;
+        }
+        
+        // Set conversion rate
+        document.getElementById('conversionRateDisplay').textContent = `${(Math.random() * 20 + 60).toFixed(1)}%`;
+        document.getElementById('conversionTrend').innerHTML = `<i class="bi bi-arrow-up-right trend-indicator"></i><span>${(Math.random() * 5 + 1).toFixed(1)}%</span> vs last month`;
+        document.getElementById('conversionTrend').className = 'summary-card-change change-positive';
+        
+        // Populate category rankings
+        const categoryRevenue = {};
+        
+        transactionsData.forEach(tx => {
+          if (tx.plan && tx.plan.planCategory && tx.amount && tx.transactionStatus === 'SUCCESS') {
+            const category = tx.plan.planCategory;
+            categoryRevenue[category] = (categoryRevenue[category] || 0) + tx.amount;
+          }
+        });
+        
+        const sortedCategories = Object.entries(categoryRevenue)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5);
+        
+        const categoryRankingsEl = document.getElementById('categoryRankings');
+        categoryRankingsEl.innerHTML = '';
+        
+        sortedCategories.forEach((cat, index) => {
+          const div = document.createElement('div');
+          div.className = 'analytics-stat';
+          div.innerHTML = `
+            <div class="analytics-stat-icon" style="background-color: rgba(126, 34, 206, 0.1); color: var(--primary-color);">
+              ${index + 1}
+            </div>
+            <div class="analytics-stat-content">
+              <h4>${cat[0].charAt(0).toUpperCase() + cat[0].slice(1)}</h4>
+              <p>₹${cat[1].toFixed(2)}</p>
+            </div>
+          `;
+          categoryRankingsEl.appendChild(div);
+        });
+      }
+
+      function initializeAdvancedAnalytics() {
+        // Populate plan popularity table
+        const planPopularity = {};
+        transactionsData.forEach(tx => {
+          if (tx.plan && tx.plan.planName) {
+            planPopularity[tx.plan.planName] = (planPopularity[tx.plan.planName] || 0) + 1;
+          }
+        });
+        
+        const sortedPlans = Object.entries(planPopularity)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5);
+        
+        const planPopularityTable = document.getElementById('planPopularityTable').querySelector('tbody');
+        planPopularityTable.innerHTML = '';
+        
+        sortedPlans.forEach(plan => {
+          const tr = document.createElement('tr');
+          const trend = Math.random() > 0.5 ? 
+            '<i class="bi bi-arrow-up-right text-success"></i>' : 
+            '<i class="bi bi-arrow-down-right text-danger"></i>';
+          
+          tr.innerHTML = `
+            <td>${plan[0]}</td>
+            <td>${plan[1]}</td>
+            <td>${trend}</td>
+          `;
+          planPopularityTable.appendChild(tr);
+        });
+        
+        // Initialize demographics chart
+        const demographicsCtx = document.getElementById('demographicsChart').getContext('2d');
+        new Chart(demographicsCtx, {
+          type: 'pie',
+          data: {
+            labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
+            datasets: [{
+              data: [15, 30, 25, 20, 10],
+              backgroundColor: [
+                '#7e22ce', '#a855f7', '#ec4899', '#f97316', '#eab308'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right',
+                labels: {
+                  boxWidth: 12,
+                  font: {
+                    size: 10
+                  }
+                }
+              }
+            }
+          }
+        });
+        
+        // Initialize retention chart
+        const retentionCtx = document.getElementById('retentionChart').getContext('2d');
+        new Chart(retentionCtx, {
+          type: 'line',
+          data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+              label: 'Retention Rate',
+              data: [85, 82, 88, 90, 87, 92],
+              borderColor: '#7e22ce',
+              backgroundColor: 'rgba(126, 34, 206, 0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                min: 50,
+                max: 100,
+                ticks: {
+                  callback: function(value) {
+                    return value + '%';
+                  }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
+        
+        // Initialize forecast chart with default period (month)
+        updateForecastChart('month');
+      }
+      
+      function updateForecastChart(period) {
+        const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+        
+        // Clear any existing chart
+        if (window.forecastChart) {
+          window.forecastChart.destroy();
+        }
+        
+        let labels, actualData, forecastData;
+        
+        // Set data based on period
+        if (period === 'month') {
+          labels = Array.from({length: 30}, (_, i) => i + 1);
+          actualData = labels.slice(0, 15).map(() => Math.floor(Math.random() * 5000) + 10000);
+          forecastData = Array.from({length: 30}, (_, i) => {
+            if (i < 15) return actualData[i];
+            return null;
+          });
+          const forecast = labels.slice(14).map(() => Math.floor(Math.random() * 6000) + 11000);
+          for (let i = 14; i < 30; i++) {
+            forecastData[i] = forecast[i - 14];
+          }
+        } else if (period === 'quarter') {
+          labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+          actualData = labels.slice(0, 3).map(() => Math.floor(Math.random() * 50000) + 100000);
+          forecastData = Array.from({length: 6}, (_, i) => {
+            if (i < 3) return actualData[i];
+            return null;
+          });
+          const forecast = labels.slice(2).map(() => Math.floor(Math.random() * 60000) + 110000);
+          for (let i = 2; i < 6; i++) {
+            forecastData[i] = forecast[i - 2];
+          }
+        } else { // year
+          labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+          actualData = labels.slice(0, 6).map(() => Math.floor(Math.random() * 200000) + 500000);
+          forecastData = Array.from({length: 12}, (_, i) => {
+            if (i < 6) return actualData[i];
+            return null;
+          });
+          const forecast = labels.slice(5).map(() => Math.floor(Math.random() * 250000) + 550000);
+          for (let i = 5; i < 12; i++) {
+            forecastData[i] = forecast[i - 5];
+          }
+        }
+        
+        window.forecastChart = new Chart(forecastCtx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Actual Revenue',
+                data: actualData,
+                borderColor: '#7e22ce',
+                backgroundColor: 'rgba(126, 34, 206, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#7e22ce',
+                pointBorderColor: '#fff',
+                pointRadius: 4
+              },
+              {
+                label: 'Forecast Revenue',
+                data: forecastData,
+                borderColor: '#ec4899',
+                backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#ec4899',
+                pointBorderColor: '#fff',
+                pointRadius: 4,
+                borderDash: [5, 5]
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: function(value) {
+                    return '₹' + value.toLocaleString();
+                  }
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    let label = context.dataset.label || '';
+                    if (label) {
+                      label += ': ';
+                    }
+                    if (context.parsed.y !== null) {
+                      label += '₹' + context.parsed.y.toLocaleString();
+                    }
+                    return label;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      function initializeCharts() {
+        // Plan Distribution Chart
+        const ctxDist = document.getElementById('planDistributionChart').getContext('2d');
+        const categoryCount = {};
+        plansData.forEach(plan => {
+          const cat = plan.planCategory || 'popular';
+          categoryCount[cat] = (categoryCount[cat] || 0) + 1;
+        });
+        
+        new Chart(ctxDist, {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(categoryCount).map(cat => cat.charAt(0).toUpperCase() + cat.slice(1)),
+            datasets: [{
+              data: Object.values(categoryCount),
+              backgroundColor: [
+                '#7e22ce', '#a855f7', '#ec4899', '#f97316', '#eab308', '#22c55e'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+              legend: { position: 'right' },
+              tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                titleColor: '#1f2937',
+                bodyColor: '#1f2937',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                padding: 12,
+                boxPadding: 6,
+                usePointStyle: true,
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.raw || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = Math.round((value / total) * 100);
+                    return `${label}: ${value} (${percentage}%)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // Monthly Subscriptions Chart
+        const ctxSubs = document.getElementById('monthlySubscriptionsChart').getContext('2d');
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const subsCount = new Array(12).fill(0);
+        
+        transactionsData.forEach(t => {
+          if (t.transactionDate) {
+            const m = new Date(t.transactionDate).getMonth();
+            subsCount[m]++;
+          }
+        });
+        
+        new Chart(ctxSubs, {
+          type: 'bar',
+          data: {
+            labels: months,
+            datasets: [{
+              label: 'New Subscriptions',
+              data: subsCount,
+              backgroundColor: '#a855f7',
+              borderColor: '#7e22ce',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { 
+              y: { 
+                beginAtZero: true,
+                grid: {
+                  color: 'rgba(0, 0, 0, 0.05)'
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                titleColor: '#1f2937',
+                bodyColor: '#1f2937',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                padding: 12
+              }
+            }
+          }
+        });
+
+        // Revenue Trends Chart
+        const ctxRev = document.getElementById('revenueTrendsChart').getContext('2d');
+        const monthlyRevenue = new Array(12).fill(0);
+        
+        transactionsData.forEach(t => {
+          if (t.amount && t.transactionDate) {
+            const date = new Date(t.transactionDate);
+            const month = date.getMonth();
+            monthlyRevenue[month] += t.amount;
+          }
+        });
+        
+        new Chart(ctxRev, {
+          type: 'line',
+          data: {
+            labels: months,
+            datasets: [{
+              label: 'Monthly Revenue (₹)',
+              data: monthlyRevenue,
+              borderColor: '#7e22ce',
+              backgroundColor: 'rgba(126, 34, 206, 0.1)',
+              fill: true,
+              tension: 0.3,
+              pointBackgroundColor: '#6b21a8',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              pointRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { 
+              y: { 
+                beginAtZero: true,
+                grid: {
+                  color: 'rgba(0, 0, 0, 0.05)'
+                },
+                ticks: {
+                  callback: function(value) {
+                    return '₹' + value;
+                  }
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                titleColor: '#1f2937',
+                bodyColor: '#1f2937',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                padding: 12,
+                callbacks: {
+                  label: function(context) {
+                    return 'Revenue: ₹' + context.raw.toFixed(2);
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // Category Performance Chart
+        const ctxCat = document.getElementById('categoryPerformanceChart').getContext('2d');
+        const categoryData = {};
+        
+        transactionsData.forEach(t => {
+          if (t.plan && t.plan.planCategory && t.amount) {
+            const category = t.plan.planCategory;
+            categoryData[category] = (categoryData[category] || 0) + t.amount;
+          }
+        });
+        
+        new Chart(ctxCat, {
+          type: 'bar',
+          data: {
+            labels: Object.keys(categoryData).map(cat => cat.charAt(0).toUpperCase() + cat.slice(1)),
+            datasets: [{
+              label: 'Revenue by Category (₹)',
+              data: Object.values(categoryData),
+              backgroundColor: [
+                '#7e22ce', '#a855f7', '#ec4899', '#f97316', '#eab308', '#22c55e'
+              ],
+              borderColor: [
+                '#6b21a8', '#9333ea', '#db2777', '#ea580c', '#ca8a04', '#16a34a'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { 
+              y: { 
+                beginAtZero: true,
+                grid: {
+                  color: 'rgba(0, 0, 0, 0.05)'
+                },
+                ticks: {
+                  callback: function(value) {
+                    return '₹' + value;
+                  }
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                titleColor: '#1f2937',
+                bodyColor: '#1f2937',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                padding: 12
+              }
+            }
+          }
+        });
+      }
+
+      loadAllData();
+    });
+  </script>
+</body>
+</html>

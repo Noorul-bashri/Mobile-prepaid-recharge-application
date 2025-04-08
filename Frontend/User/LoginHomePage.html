@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Home Page</title>
+  <!-- Bootstrap CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- AOS Library -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+  
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .preloader .spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #6c63ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    :root {
+      --primary-color: #6c63ff;
+      --primary-light: #9d9ade;
+      --primary-dark: #4d44d9;
+      --secondary-color: #55afc1;
+      --accent-color: #ff6b6b;
+      --text-dark: #333333;
+      --text-light: #ffffff;
+      --bg-light: #f8f9fa;
+      --bg-dark: #343a40;
+      --transition-speed: 0.3s;
+      --card-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      --hover-transform: translateY(-5px);
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      background-color: #f9f9fa;
+      scroll-behavior: smooth;
+    }
+    .content-container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+    h1, h2, h3, p { margin: 0; }
+    header.banner {
+      position: relative;
+      background: url('../Images/backgrounf.jpeg') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    header.banner::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+      z-index: 1;
+    }
+    header.banner .banner-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeInUp 1s ease-out;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    header.banner .banner-content h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    header.banner .banner-content p {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+    .navbar {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      padding: 1rem 0;
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+    .navbar-brand:hover { transform: scale(1.05); }
+    .navbar-brand i {
+      font-size: 1.8rem;
+      margin-right: 0.5rem;
+      color: var(--accent-color);
+      text-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
+    }
+    .navbar-nav .nav-link {
+      color: white;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    .navbar-nav .nav-link:hover { color: rgba(255, 255, 255, 0.9); }
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease;
+    }
+    .navbar-nav .nav-link:hover::after { width: 100%; }
+    .navbar .settings-icon {
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .navbar .settings-icon:hover { transform: rotate(90deg); }
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    .plan-list {
+      background: white;
+      border-radius: 15px;
+      padding: 0.8rem 1.5rem;
+      box-shadow: var(--card-shadow);
+      margin: 1.5rem 0;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .plan-list::-webkit-scrollbar { height: 5px; }
+    .plan-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    .plan-list::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+    .plan-list li { display: inline-block; margin-right: 0.8rem; }
+    .plan-link {
+      color: var(--text-dark);
+      font-weight: 500;
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .plan-link:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: var(--hover-transform);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+    .plan-link.active {
+      background: var(--primary-color);
+      color: white;
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+    .user-profile-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1rem 1.5rem;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--primary-color);
+    }
+    .user-profile-card:hover {
+      transform: var(--hover-transform);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: var(--hover-transform);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    .card-title { font-weight: 600; color: var(--text-dark); }
+    .usage-card { height: 100%; position: relative; overflow: hidden; }
+    .data-usage-card::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(85, 175, 193, 0.1);
+      z-index: 0;
+    }
+    .data-usage-card::after {
+      content: "";
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(85, 175, 193, 0.1);
+      z-index: 0;
+    }
+    .progress {
+      height: 10px;
+      border-radius: 5px;
+      background-color: #e9ecef;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .progress-bar {
+      transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 5px;
+    }
+    .current-plan-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px;
+      height: 150px;
+      background: url('data:image/svg+xml;base64,...');
+      opacity: 0.5;
+      z-index: 0;
+    }
+    .history-card {
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      border-left: 4px solid var(--secondary-color);
+    }
+    .history-card.show { opacity: 1; transform: translateY(0); }
+    .btn-primary {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    .btn-primary:hover {
+      background: #5a52d5;
+      border-color: #5a52d5;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+    .btn-outline-primary {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    .btn-outline-primary:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    }
+    .modal.fade .modal-dialog {
+      transition: transform 0.3s ease-out, opacity 0.3s ease;
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    .modal.show .modal-dialog { transform: scale(1); opacity: 1; }
+    .modal-content { border-radius: 15px; border: none; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary-color));
+      color: var(--text-dark);
+      border-bottom: none;
+      padding: 20px 25px;
+    }
+    .modal-footer { border-top: none; padding: 20px 25px; }
+    .modal-footer button {
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    .modal-footer button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+    }
+    .user-details-section {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 2rem;
+    }
+    .user-details-section h4 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+    .user-details-section h4::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--primary-color);
+    }
+    .user-detail-item { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .user-detail-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .user-detail-label { font-weight: 600; color: #6c757d; }
+    .user-detail-value { font-weight: 500; color: #333; }
+    .footer-top {
+      background: linear-gradient(135deg, #343a40, #212529);
+      padding: 4rem 0 2rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-top::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    }
+    .footer-top h5 {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      color: white;
+    }
+    .footer-top h5::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--primary-color);
+      border-radius: 1.5px;
+    }
+    .footer-top p {
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+    }
+    .footer-top ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .footer-top ul li {
+      margin-bottom: 0.8rem;
+      transition: transform 0.3s ease;
+    }
+    .footer-top ul li:hover {
+      transform: translateX(5px);
+    }
+    .footer-top ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      transition: color 0.3s ease;
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .footer-top ul li a::before {
+      content: '→';
+      position: absolute;
+      left: -20px;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .footer-top ul li a:hover {
+      color: white;
+      padding-left: 20px;
+    }
+    .footer-top ul li a:hover::before {
+      opacity: 1;
+      left: 0;
+    }
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+    .social-icon:hover {
+      background: var(--primary-color);
+      transform: translateY(-5px);
+    }
+    .newsletter-section {
+      margin-top: 2rem;
+      padding: 25px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      position: relative;
+    }
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      max-width: 100%;
+      margin-top: 15px;
+    }
+    .newsletter-form input {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    .newsletter-form input::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+    .newsletter-form input:focus {
+      outline: none;
+      background: rgba(255,255,255,0.2);
+    }
+    .newsletter-form button {
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .newsletter-form button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .newsletter-form button.subscribed {
+      background: linear-gradient(45deg, #28a745, #218838);
+      pointer-events: none;
+    }
+    .subscription-message {
+      color: #a9b867;
+      margin-top: 1rem;
+      padding: 10px;
+      border-radius: 5px;
+      background: rgba(169,184,103,0.1);
+      text-align: center;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .newsletter-extra p {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 15px;
+    }
+    .footer-bottom {
+      background: #212529;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 1.25rem 0;
+      position: relative;
+    }
+    .modal-custom {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeInModal 0.3s ease-out;
+    }
+    .modal-custom.show {
+      display: block;
+    }
+    .quick-action-card { transition: all 0.3s ease; cursor: pointer; }
+    .quick-action-card:hover { transform: translateY(-10px); }
+    .quick-action-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+    }
+    .quick-action-card:hover .quick-action-icon { transform: scale(1.1); }
+    .recommended-plan-card { border: none; border-radius: 15px; overflow: hidden; transition: all 0.3s ease; height: 100%; }
+    .recommended-plan-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+    .recommended-plan-card .badge { position: absolute; top: 15px; right: 15px; padding: 8px 15px; border-radius: 50px; font-weight: 500; }
+    .recommended-plan-card .price { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 15px; }
+    @media (max-width: 768px) {
+      header.banner .banner-content h1 { font-size: 2rem; }
+      .user-profile-card { margin-bottom: 1rem; }
+      .navbar-nav { text-align: center; }
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Banner -->
+  <header class="banner">
+    <div class="content-container banner-content">
+      <h1>Mobi-Comm Service Pvt Ltd</h1>
+      <p>Empowering the future of digital communication with seamless connectivity and innovative solutions.</p>
+    </div>
+  </header>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid content-container">
+      <a class="navbar-brand" href="LoginHomePage.html">
+        <i class="bi bi-phone"></i>
+        <span>Mobi-Comm</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="ValidationPage.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="plans.html">Plans</a></li>
+          <li class="nav-item"><a class="nav-link" href="About.html">About Us</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link settings-icon" href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-gear"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3" aria-labelledby="settingsDropdown">
+              <li><a class="dropdown-item py-2" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="bi bi-person-circle me-2"></i> Edit Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item py-2" href="#" id="logoutLink"><i class="bi bi-box-arrow-right me-2"></i> Sign Out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Settings Modal -->
+  <div class="modal fade" id="settingsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold"><i class="bi bi-person-circle me-2"></i>Edit Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="profileForm">
+            <div class="mb-3">
+              <label class="form-label fw-medium">Name</label>
+              <input type="text" class="form-control rounded-pill" id="profileName" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-medium">Email</label>
+              <input type="email" class="form-control rounded-pill" id="profileEmail" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-medium">Phone</label>
+              <input type="text" class="form-control rounded-pill" id="profilePhone" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Welcome Banner -->
+   <div class="container mt-4">
+  <div class="card overflow-hidden animate__animated animate__fadeIn" data-aos="fade-up" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
+    <div class="card-body p-4">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h4 class="fw-bold mb-2">Welcome back, <span id="welcomeName">User</span>!</h4>
+          <p class="mb-0" id="welcomeMessage">Your account is active and your services are running smoothly.</p>
+        </div>
+        <div class="col-md-4 text-end">
+          <div class="floating">
+            <i class="bi bi-shield-check" style="font-size: 3rem;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- User Details Section -->
+  <div class="container mt-4">
+    <div class="user-details-section animate__animated animate__fadeIn" data-aos="fade-up">
+      <h4>Your Account Details</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="user-detail-item">
+            <div class="user-detail-label">Full Name</div>
+            <div class="user-detail-value">
+              <span id="detailName">Loading...</span>
+              <i class="bi bi-pencil-square ms-2" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#settingsModal"></i>
+            </div>
+          </div>
+          <div class="user-detail-item">
+            <div class="user-detail-label">Mobile Number</div>
+            <div class="user-detail-value" id="detailPhone">Loading...</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="user-detail-item">
+            <div class="user-detail-label">Email Address</div>
+            <div class="user-detail-value">
+              <span id="detailEmail">Loading...</span>
+              <i class="bi bi-pencil-square ms-2" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#settingsModal"></i>
+            </div>
+          </div>
+          <div class="user-detail-item">
+            <div class="user-detail-label">Current Plan</div>
+            <div class="user-detail-value" id="detailCurrentPlan">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Cards Section -->
+  <div class="container p-4">
+    <div class="row">
+
+      <div class="col-md-6 mb-4">
+        <div class="card usage-card current-plan-card animate__animated animate__fadeInRight h-100" data-aos="fade-left">
+          <div class="card-body p-4 d-flex flex-column">
+            <div class="d-flex align-items-center mb-3">
+              <div class="rounded-circle p-2 me-3" style="background: rgba(108, 99, 255, 0.1);">
+                <i class="bi bi-calendar-check" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+              </div>
+              <div>
+                <h5 class="card-title mb-0">Current Plan</h5>
+                <small class="text-muted">Active subscription</small>
+              </div>
+            </div>
+            <h4 class="card-title fw-bold" id="currentPlanPrice">Loading...</h4>
+            <h5 class="card-subtitle mb-2" id="currentPlanName">Loading...</h5>
+            <hr>
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-calendar-event me-2 text-muted"></i>
+              <p class="mb-0" id="rechargeDate">Recharge On: Loading...</p>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-calendar-x me-2 text-muted"></i>
+              <p class="mb-0" id="expiryDate">Expires On: Loading...</p>
+            </div>
+            <div class="mt-auto pt-3">
+              <button class="btn btn-primary btn-sm" id="rechargeNowBtn">
+                <i class="bi bi-arrow-repeat me-1"></i> Recharge Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions Section -->
+  <div class="container mb-4">
+    <h5 class="fw-bold mb-3" data-aos="fade-up">Quick Actions</h5>
+    <div class="row g-3" data-aos="fade-up" data-aos-delay="100">
+      <div class="col-6 col-md-3">
+        <a href="plans.html" class="text-decoration-none">
+          <div class="card h-100 text-center animate__animated animate__fadeIn quick-action-card">
+            <div class="card-body">
+              <div class="quick-action-icon" style="background: rgba(108, 99, 255, 0.1);">
+                <i class="bi bi-credit-card" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+              </div>
+              <h6 class="fw-bold">Recharge</h6>
+              <p class="small text-muted mb-0">Quick recharge</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- Other Quick Actions remain unchanged -->
+    </div>
+  </div>
+
+  <!-- Transaction History Section -->
+  <div class="container mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-up">
+      <h5 class="fw-bold mb-0">Transaction History</h5>
+      <button class="btn btn-primary" id="viewHistoryBtn">
+        <i class="bi bi-clock-history me-2"></i> View History
+      </button>
+    </div>
+    <div id="historyContainer" class="row" style="display: none;"></div>
+  </div>
+
+  <!-- Recommended Plans Section -->
+  <div class="container mb-5">
+    <h5 class="fw-bold mb-3" data-aos="fade-up">Recommended for You</h5>
+    <div class="row g-3 recommended-plans-container" data-aos="fade-up" data-aos-delay="100"></div>
+  </div>
+
+  
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-top">
+      <div class="content-container">
+        <div class="row">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <h5>Mobi-Comm Service Pvt Ltd</h5>
+            <p>Connecting People, Anytime, Anywhere.</p>
+            <div class="social-icons">
+              <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="About.html">About Us</a></li>
+              <li><a data-modal-target="privacyModal">Privacy Policy</a></li>
+              <li><a data-modal-target="termsModal">Terms & Conditions</a></li>
+              <li><a data-modal-target="refundModal">Refund Policy</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <h5>Connect With Us</h5>
+            <p>Follow us on social media for the latest updates.</p>
+          </div>
+        </div>
+        <div class="newsletter-section" data-aos="fade-up" data-aos-delay="400">
+          <h5>Subscribe to Our Newsletter</h5>
+          <p>Get the latest updates and exclusive offers delivered straight to your inbox.</p>
+          <form id="newsletterForm" class="newsletter-form">
+            <input type="email" id="newsletterEmail" placeholder="Enter your email" required>
+            <button type="submit" class="btn" id="subscribeButton">Subscribe</button>
+          </form>
+          <div id="subscription-message" class="subscription-message" style="display:none;"></div>
+          <div class="newsletter-extra mt-2">
+            <p>We value your privacy and promise not to spam your inbox. As a subscriber, you'll get exclusive insights, early access to offers, and behind-the-scenes updates.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="content-container">
+        <p class="mb-0">© 2025 Mobi-Comm Service Pvt Ltd. All Rights Reserved.</p>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="privacyModal" class="modal-custom">
+      <div class="modal-content-custom">
+        <div class="modal-header-custom">
+          <h2>Privacy Policy</h2>
+        </div>
+        <div class="modal-body-custom">
+          <p>At Mobi-Comm Service Pvt Ltd, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you use our services.</p>
+          <p><strong>Information Collection:</strong> We collect information such as your name, mobile number, email address, and payment details when you register or recharge through our platform.</p>
+          <p><strong>Use of Information:</strong> Your data is used to process transactions, provide customer support, and improve our services. We may also use it to send you promotional offers, with your consent.</p>
+          <p><strong>Data Security:</strong> We implement industry-standard security measures to protect your information from unauthorized access, disclosure, or misuse.</p>
+          <p><strong>Third-Party Sharing:</strong> We do not sell or share your personal information with third parties, except as required by law or to facilitate services (e.g., payment processing).</p>
+          <p><strong>Your Rights:</strong> You have the right to access, update, or delete your personal information by contacting our support team.</p>
+          <p>This policy may be updated periodically, and we encourage you to review it regularly.</p>
+        </div>
+        <div class="modal-footer-custom">
+          <button class="btn-close-custom" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+    <div id="termsModal" class="modal-custom">
+      <div class="modal-content-custom">
+        <div class="modal-header-custom">
+          <h2>Terms & Conditions</h2>
+        </div>
+        <div class="modal-body-custom">
+          <p>By using Mobi-Comm Service Pvt Ltd's services, you agree to abide by these Terms & Conditions.</p>
+          <p><strong>Service Usage:</strong> Our services are intended for personal use only. You must provide accurate information during registration and transactions.</p>
+          <p><strong>Payments:</strong> All payments are non-refundable unless explicitly stated otherwise. You are responsible for ensuring sufficient funds are available during transactions.</p>
+          <p><strong>Account Responsibility:</strong> You are responsible for maintaining the confidentiality of your account details and for all activities under your account.</p>
+          <p><strong>Service Availability:</strong> We strive to provide uninterrupted service but are not liable for downtime due to maintenance or unforeseen circumstances.</p>
+          <p><strong>Termination:</strong> We reserve the right to suspend or terminate your access if you violate these terms.</p>
+          <p>These terms are governed by applicable laws, and disputes will be resolved through arbitration.</p>
+        </div>
+        <div class="modal-footer-custom">
+          <button class="btn-close-custom" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+    <div id="refundModal" class="modal-custom">
+      <div class="modal-content-custom">
+        <div class="modal-header-custom">
+          <h2>Refund Policy</h2>
+        </div>
+        <div class="modal-body-custom">
+          <p>Mobi-Comm Service Pvt Ltd strives to ensure customer satisfaction. This Refund Policy outlines the conditions under which refunds may be processed.</p>
+          <p><strong>Eligibility:</strong> Refunds are applicable only if a recharge fails due to a technical error on our end and the service is not delivered.</p>
+          <p><strong>Non-Refundable Cases:</strong> Successful recharges, user errors (e.g., entering incorrect mobile numbers), or changes of mind are not eligible for refunds.</p>
+          <p><strong>Process:</strong> To request a refund, contact our support team within 7 days of the transaction with your order details. Refunds will be processed within 10-15 business days upon approval.</p>
+          <p><strong>Exceptions:</strong> Promotional offers or discounted plans may have specific refund terms, disclosed at the time of purchase.</p>
+          <p>We reserve the right to deny refunds if the request does not meet our policy criteria.</p>
+        </div>
+        <div class="modal-footer-custom">
+          <button class="btn-close-custom" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+          crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
+
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
+
+      setTimeout(() => {
+        document.getElementById('preloader').style.opacity = '0';
+        setTimeout(() => { document.getElementById('preloader').style.display = 'none'; }, 500);
+      }, 1000);
+
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      const token = localStorage.getItem('userToken');
+      if (!userData || !token) {
+        window.location.href = 'UserLogin.html';
+        return;
+      }
+
+      function loadUserData() {
+        document.getElementById('userName').textContent = userData.fullName || 'User';
+        document.getElementById('userNumber').textContent = userData.phone || 'N/A';
+        document.getElementById('welcomeName').textContent = userData.fullName || 'User';
+        document.getElementById('detailName').textContent = userData.fullName || 'Not provided';
+        document.getElementById('detailPhone').textContent = userData.phone || 'Not provided';
+        document.getElementById('detailEmail').textContent = userData.email || 'Not provided';
+        document.getElementById('detailCurrentPlan').textContent = userData.currentPlan || 'No active plan';
+        document.getElementById('profileName').value = userData.fullName || '';
+        document.getElementById('profileEmail').value = userData.email || '';
+        document.getElementById('profilePhone').value = userData.phone || '';
+      }
+      loadUserData();
+
+      async function loadCurrentPlan() {
+        try {
+          const response = await fetch(`http://localhost:8081/api/transactions/user/${userData.id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const transactions = await response.json();
+          const latestTransaction = transactions.sort((a, b) => new Date(b.transactionDate) - new Date(a.transactionDate))[0];
+          
+          if (latestTransaction && latestTransaction.transactionStatus === 'SUCCESS') {
+            document.getElementById('currentPlanPrice').textContent = `Rs. ${latestTransaction.amount}`;
+            document.getElementById('currentPlanName').textContent = latestTransaction.plan.planName;
+            document.getElementById('rechargeDate').textContent = `Recharge On: ${new Date(latestTransaction.transactionDate).toLocaleDateString()}`;
+            const expiryDate = new Date(latestTransaction.transactionDate);
+            expiryDate.setDate(expiryDate.getDate() + latestTransaction.plan.validityDays);
+            document.getElementById('expiryDate').textContent = `Expires On: ${expiryDate.toLocaleDateString()}`;
+          } else {
+            document.getElementById('currentPlanPrice').textContent = 'No active plan';
+            document.getElementById('currentPlanName').textContent = '';
+            document.getElementById('rechargeDate').textContent = '';
+            document.getElementById('expiryDate').textContent = '';
+          }
+        } catch (error) {
+          console.error('Error fetching current plan:', error);
+          document.getElementById('currentPlanPrice').textContent = 'Error loading plan';
+        }
+      }
+      loadCurrentPlan();
+
+      document.getElementById('viewHistoryBtn').addEventListener('click', async function() {
+        const historyContainer = document.getElementById('historyContainer');
+        if (historyContainer.style.display === 'none') {
+          try {
+            const response = await fetch(`http://localhost:8081/api/transactions/user/${userData.id}`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const transactions = await response.json();
+            historyContainer.innerHTML = '';
+            transactions.forEach((transaction, index) => {
+              const card = document.createElement('div');
+              card.className = 'col-md-6 mb-4';
+              card.innerHTML = `
+                <div class="card history-card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                      <h5 class="card-title fw-bold">${transaction.plan.planName}</h5>
+                      <span class="badge rounded-pill" style="background-color: var(--primary-color);">${transaction.amount}</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                      <i class="bi bi-calendar-date me-2 text-muted"></i>
+                      <p class="mb-0">Date: ${new Date(transaction.transactionDate).toLocaleDateString()}</p>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                      <i class="bi bi-credit-card me-2 text-muted"></i>
+                      <p class="mb-0">Payment: ${transaction.paymentMethod}</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-calendar-check me-2 text-muted"></i>
+                      <p class="mb-0">Validity: ${transaction.plan.validityDays} Days</p>
+                    </div>
+                  </div>
+                </div>
+              `;
+              historyContainer.appendChild(card);
+              setTimeout(() => card.querySelector('.history-card').classList.add('show'), index * 100);
+            });
+            historyContainer.style.display = 'flex';
+            this.textContent = 'Hide History';
+          } catch (error) {
+            console.error('Error fetching transaction history:', error);
+            historyContainer.innerHTML = '<p class="text-danger">Error loading transaction history.</p>';
+            historyContainer.style.display = 'block';
+          }
+        } else {
+          historyContainer.querySelectorAll('.history-card').forEach(card => card.classList.remove('show'));
+          setTimeout(() => {
+            historyContainer.style.display = 'none';
+            document.getElementById('viewHistoryBtn').textContent = 'View History';
+          }, 300);
+        }
+      });
+
+      async function loadRecommendedPlans() {
+        try {
+          const response = await fetch(`http://localhost:8081/api/transactions/user/${userData.id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const transactions = await response.json();
+          const planFrequency = {};
+          transactions.forEach(tx => {
+            if (tx.plan && tx.transactionStatus === 'SUCCESS') {
+              planFrequency[tx.plan.planName] = (planFrequency[tx.plan.planName] || 0) + 1;
+            }
+          });
+          const mostFrequentPlans = Object.entries(planFrequency)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 3)
+            .map(([planName]) => transactions.find(tx => tx.plan.planName === planName).plan);
+
+          const container = document.querySelector('.recommended-plans-container');
+          container.innerHTML = '';
+          mostFrequentPlans.forEach((plan, index) => {
+            const card = document.createElement('div');
+            card.className = 'col-md-4';
+            card.innerHTML = `
+              <div class="card h-100 animate__animated animate__fadeIn recommended-plan-card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h5 class="card-title fw-bold">${plan.planName}</h5>
+                    <span class="badge rounded-pill" style="background-color: ${index === 0 ? 'var(--primary-color)' : index === 1 ? 'var(--secondary-color)' : '#28a745'};">
+                      ${index === 0 ? 'Top Pick' : index === 1 ? 'Popular' : 'Suggested'}
+                    </span>
+                  </div>
+                  <h4 class="fw-bold price">Rs. ${plan.amount}</h4>
+                  <p class="card-text">
+                    <i class="bi bi-wifi me-2"></i> ${plan.dataVolume || 'N/A'}<br>
+                    <i class="bi bi-calendar-check me-2"></i> ${plan.validityDays} Days<br>
+                    <i class="bi bi-film me-2"></i> ${plan.benefits || 'Standard Benefits'}
+                  </p>
+                  <button class="btn btn-primary w-100 mt-3">Select Plan</button>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } catch (error) {
+          console.error('Error fetching recommended plans:', error);
+          document.querySelector('.recommended-plans-container').innerHTML = '<p class="text-danger">Error loading recommended plans.</p>';
+        }
+      }
+      loadRecommendedPlans();
+
+      document.getElementById('profileForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const updatedProfile = {
+          fullName: document.getElementById('profileName').value,
+          email: document.getElementById('profileEmail').value,
+          phone: userData.phone,
+          id: userData.id,
+          status: userData.status,
+          currentPlan: userData.currentPlan
+        };
+        try {
+          const response = await fetch(`http://localhost:8081/api/users/update-profile`, {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              phone: updatedProfile.phone,
+              fullName: updatedProfile.fullName,
+              email: updatedProfile.email
+            })
+          });
+          if (!response.ok) throw new Error('Failed to update profile');
+          localStorage.setItem('userData', JSON.stringify(updatedProfile));
+          loadUserData();
+          const modal = bootstrap.Modal.getInstance(document.getElementById('settingsModal'));
+          modal.hide();
+          showToast('Profile updated successfully!', 'success');
+        } catch (error) {
+          console.error('Error updating profile:', error);
+          showToast('Error updating profile. Please try again.', 'danger');
+        }
+      });
+
+      document.getElementById('rechargeNowBtn').addEventListener('click', function() {
+        const currentPlan = {
+          name: document.getElementById('currentPlanName').textContent,
+          price: document.getElementById('currentPlanPrice').textContent,
+          expiry: document.getElementById('expiryDate').textContent.replace('Expires On: ', '')
+        };
+        localStorage.setItem('selectedPlan', JSON.stringify(currentPlan));
+        window.location.href = 'PaymentPage.html';
+      });
+
+      document.getElementById('logoutLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        const confirmDialog = document.createElement('div');
+        confirmDialog.className = 'modal fade';
+        confirmDialog.id = 'logoutConfirmModal';
+        confirmDialog.innerHTML = `
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body"><p>Are you sure you want to log out?</p></div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmLogout">Logout</button>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(confirmDialog);
+        const modal = new bootstrap.Modal(document.getElementById('logoutConfirmModal'));
+        modal.show();
+        document.getElementById('confirmLogout').addEventListener('click', function() {
+          localStorage.removeItem('userData');
+          localStorage.removeItem('userToken');
+          window.location.href = 'UserLogin.html';
+        });
+        document.getElementById('logoutConfirmModal').addEventListener('hidden.bs.modal', function() {
+          document.body.removeChild(confirmDialog);
+        });
+      });
+
+      const newsletterForm = document.getElementById('newsletterForm');
+      const subscriptionMessage = document.getElementById('subscription-message');
+      const subscribeButton = document.getElementById('subscribeButton');
+      newsletterForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const email = document.getElementById('newsletterEmail').value;
+        subscriptionMessage.style.display = 'none';
+        subscribeButton.disabled = true;
+        subscribeButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Processing...';
+        try {
+          const response = await fetch('http://localhost:8081/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const result = await response.text();
+          if (response.ok) {
+            subscriptionMessage.textContent = 'Subscription successful! Check your inbox for updates.';
+            subscriptionMessage.style.color = '#a9b867';
+            subscriptionMessage.style.display = 'block';
+            subscribeButton.textContent = 'Subscribed';
+            subscribeButton.classList.add('subscribed');
+            newsletterForm.reset();
+            setTimeout(() => {
+              subscribeButton.textContent = 'Subscribe';
+              subscribeButton.classList.remove('subscribed');
+              subscribeButton.disabled = false;
+              subscriptionMessage.style.display = 'none';
+            }, 120000);
+          } else {
+            subscriptionMessage.textContent = result.includes("already subscribed") ? 
+              'This email is already subscribed!' : 
+              'Subscription failed. Please try again.';
+            subscriptionMessage.style.color = '#dc3545';
+            subscriptionMessage.style.display = 'block';
+            setTimeout(() => {
+              subscriptionMessage.style.display = 'none';
+              subscribeButton.innerHTML = 'Subscribe';
+              subscribeButton.disabled = false;
+            }, 5000);
+          }
+        } catch (error) {
+          subscriptionMessage.textContent = 'An error occurred. Please try again later.';
+          subscriptionMessage.style.color = '#dc3545';
+          subscriptionMessage.style.display = 'block';
+          setTimeout(() => {
+            subscriptionMessage.style.display = 'none';
+            subscribeButton.innerHTML = 'Subscribe';
+            subscribeButton.disabled = false;
+          }, 5000);
+        }
+      });
+
+      const modalTriggers = document.querySelectorAll('[data-modal-target]');
+      const modalClosers = document.querySelectorAll('[data-modal-close]');
+      modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+          const modalId = this.getAttribute('data-modal-target');
+          const modal = document.getElementById(modalId);
+          modal.classList.add('show');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      modalClosers.forEach(closer => {
+        closer.addEventListener('click', function() {
+          const modal = this.closest('.modal-custom');
+          modal.classList.remove('show');
+          document.body.style.overflow = 'auto';
+        });
+      });
+      document.querySelectorAll('.modal-custom').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('show');
+            document.body.style.overflow = 'auto';
+          }
+        });
+      });
+
+      function showToast(message, type) {
+        const toastContainer = document.createElement('div');
+        toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+        toastContainer.style.zIndex = '11';
+        toastContainer.innerHTML = `
+          <div class="toast show animate__animated animate__fadeInUp" role="alert">
+            <div class="toast-header bg-${type} text-white">
+              <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+              <strong class="me-auto">${type === 'success' ? 'Success' : 'Error'}</strong>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">${message}</div>
+          </div>
+        `;
+        document.body.appendChild(toastContainer);
+        setTimeout(() => {
+          toastContainer.querySelector('.toast').classList.replace('animate__fadeInUp', 'animate__fadeOutDown');
+          setTimeout(() => document.body.removeChild(toastContainer), 500);
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>

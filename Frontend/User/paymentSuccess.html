@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Success - Mobi-Comm</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #7209b7;
+      --accent-color: #f72585;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --success-color: #4cc9f0;
+      --success-light: rgba(76, 201, 240, 0.1);
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --hover-transform: translateY(-5px);
+      --icon-phone: #f72585;
+      --icon-email: #4361ee;
+      --icon-plan: #7209b7;
+      --icon-amount: #f72585;
+      --icon-validity: #3a86ff;
+      --icon-data: #4361ee;
+      --icon-benefits: #7209b7;
+      --icon-transaction: #4cc9f0;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f0f4f8;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Header Styles (from paymentSuccess.html) */
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1rem 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      position: relative;
+      z-index: 100;
+    }
+    .header::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent-color), var(--primary-color), var(--secondary-color));
+    }
+    .header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .header-logo:hover { transform: scale(1.05); }
+    .header-logo i {
+      font-size: 1.8rem;
+      margin-right: 0.5rem;
+      color: var(--accent-color);
+      text-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
+    }
+    .header-nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+    .header-nav a:hover { color: rgba(255, 255, 255, 1); }
+    .header-nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease;
+    }
+    .header-nav a:hover::after { width: 100%; }
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 3rem 0;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main-content::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 10% 10%, rgba(67, 97, 238, 0.03) 0%, transparent 30%),
+                  radial-gradient(circle at 90% 90%, rgba(247, 37, 133, 0.03) 0%, transparent 30%);
+      z-index: -1;
+    }
+    .success-card {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .success-card:hover {
+      transform: var(--hover-transform);
+      box-shadow: 0 15px 35px rgba(67, 97, 238, 0.15);
+    }
+    .success-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .success-icon i {
+      font-size: 2.5rem;
+      color: var(--success-color);
+    }
+    .success-header h2 {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      font-size: 2rem;
+    }
+    .success-body {
+      padding: 2rem;
+    }
+    .details {
+      margin-bottom: 1.5rem;
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    .details:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
+    }
+    .details h5 {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      display: inline-block;
+    }
+    .details h5::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 3px;
+    }
+    .details p {
+      margin: 0.75rem 0;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+    }
+    .details p i {
+      margin-right: 0.75rem;
+      font-size: 1.2rem;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+    .details p i.bi-phone { color: var(--icon-phone); }
+    .details p i.bi-envelope { color: var(--icon-email); }
+    .details p i.bi-card-heading { color: var(--icon-plan); }
+    .details p i.bi-currency-rupee { color: var(--icon-amount); }
+    .details p i.bi-calendar-check { color: var(--icon-validity); }
+    .details p i.bi-wifi { color: var(--icon-data); }
+    .details p i.bi-gift { color: var(--icon-benefits); }
+    .details p i.bi-receipt { color: var(--icon-transaction); }
+    .details p strong {
+      min-width: 100px;
+      display: inline-block;
+      color: var(--dark-color);
+    }
+    .email-msg {
+      text-align: center;
+      color: var(--success-color);
+      font-weight: 500;
+      margin: 2rem 0;
+      padding: 1rem;
+      background: var(--success-light);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .email-msg i { margin-right: 0.75rem; font-size: 1.25rem; }
+    .btn-home {
+      display: block;
+      width: 100%;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      transition: all 0.3s ease;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn-home:hover {
+      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+      color: white;
+    }
+    .message-success {
+      color: #28a745;
+      background-color: rgba(40, 167, 69, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      display: none;
+      text-align: center;
+    }
+    .message-error {
+      color: #dc3545;
+      background-color: rgba(220, 53, 69, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      display: none;
+      text-align: center;
+    }
+    /* Footer Styles (from ValidationPage.html) */
+    .footer-top {
+      background: linear-gradient(135deg, #343a40, #212529);
+      padding: 4rem 0 2rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-top::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    }
+    .footer-top h5 {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      color: white;
+    }
+    .footer-top h5::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--primary-color);
+      border-radius: 1.5px;
+    }
+    .footer-top p { color: rgba(255,255,255,0.7); line-height: 1.7; }
+    .footer-top ul { list-style-type: none; padding-left: 0; }
+    .footer-top ul li { margin-bottom: 0.8rem; transition: transform 0.3s ease; }
+    .footer-top ul li:hover { transform: translateX(5px); }
+    .footer-top ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      transition: color 0.3s ease;
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .footer-top ul li a:hover { color: white; padding-left: 20px; }
+    .social-icons { display: flex; gap: 15px; margin-top: 15px; }
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+    .social-icon:hover {
+      background: var(--primary-color);
+      transform: translateY(-5px);
+    }
+    .newsletter-section {
+      margin-top: 2rem;
+      padding: 25px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+    }
+    .newsletter-form { display: flex; gap: 0.5rem; max-width: 100%; margin-top: 15px; }
+    .newsletter-form input {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+    .newsletter-form input:focus { outline: none; background: rgba(255,255,255,0.2); }
+    .newsletter-form button {
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .newsletter-form button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .subscription-message {
+      color: #a9b867;
+      margin-top: 1rem;
+      padding: 10px;
+      border-radius: 5px;
+      background: rgba(169,184,103,0.1);
+      text-align: center;
+      display: none;
+    }
+    .footer-bottom {
+      background: linear-gradient(90deg,  var(--primary-color), var(--secondary-color));
+      color: rgba(16, 15, 15, 0.7);
+      font-weight: 700;
+      text-align: center;
+      padding: 1.25rem 0;
+    }
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f72585;
+      opacity: 0.7;
+      top: 0;
+      animation: confetti-fall 5s linear infinite;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    @media (max-width: 768px) {
+      .header-nav a { margin-left: 1rem; font-size: 0.9rem; }
+      .success-header h2 { font-size: 1.5rem; }
+      .details p strong { min-width: 80px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="#" class="header-logo">
+        <i class="bi bi-phone"></i>
+        <span>Mobi-Comm</span>
+      </a>
+      <div class="header-nav">
+        <a href="plans.html">Home</a>
+        <a href="plans.html#popular">Plans</a>
+   
+        <a href="About.html">About Us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <div class="success-card animate__animated animate__fadeInUp">
+        <div class="success-header">
+          <div class="success-icon animate__animated animate__bounceIn animate__delay-1s">
+            <i class="bi bi-check-lg"></i>
+          </div>
+          <h2>Payment Successful!</h2>
+          <p class="mb-0">Your plan has been activated successfully</p>
+        </div>
+        <div class="success-body">
+          <div class="details animate__animated animate__fadeInUp animate__delay-1s">
+            <h5>User Details</h5>
+            <p><i class="bi bi-phone"></i><strong>Phone Number:</strong> <span id="userPhone"></span></p>
+            <p><i class="bi bi-envelope"></i><strong>Email:</strong> <span id="userEmail"></span></p>
+          </div>
+          <div class="details animate__animated animate__fadeInUp animate__delay-2s">
+            <h5>Plan Details</h5>
+            <p><i class="bi bi-card-heading"></i><strong>Plan Name:</strong> <span id="planName"></span></p>
+            <p><i class="bi bi-currency-rupee"></i><strong>Amount:</strong> ₹<span id="planAmount"></span></p>
+            <p><i class="bi bi-calendar-check"></i><strong>Validity:</strong> <span id="planValidity"></span> Days</p>
+            <p><i class="bi bi-wifi"></i><strong>Data:</strong> <span id="planData"></span></p>
+            <p><i class="bi bi-gift"></i><strong>Benefits:</strong> <span id="planBenefits"></span></p>
+          </div>
+          <div class="details animate__animated animate__fadeInUp animate__delay-3s">
+            <h5>Transaction Details</h5>
+            <p><i class="bi bi-receipt"></i><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+          </div>
+          <div class="email-msg animate__animated animate__fadeIn animate__delay-4s" id="emailMsg">
+            <i class="bi bi-envelope-check"></i>
+            Email sent successfully to the respective email ID.
+          </div>
+          <div id="paymentError" class="message-error"></div>
+          <a href="plans.html" class="btn-home animate__animated animate__fadeInUp animate__delay-4s">
+            <i class="bi bi-house-door me-2"></i>Return to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+   
+     
+    <div class="footer-bottom">
+      <div class="content-container">
+        <p class="mb-0">© 2025 Mobi-Comm Service Pvt Ltd. All Rights Reserved.</p>
+      </div>
+    </div>
+  
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, easing: 'ease-in-out', once: true });
+    document.addEventListener("DOMContentLoaded", function () {
+      function createConfetti() {
+        const colors = ['#4361ee', '#7209b7', '#f72585', '#4cc9f0', '#3a86ff'];
+        for (let i = 0; i < 100; i++) {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.width = (Math.random() * 10 + 5) + 'px';
+          confetti.style.height = (Math.random() * 10 + 5) + 'px';
+          confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+          confetti.style.animationDelay = (Math.random() * 5) + 's';
+          document.body.appendChild(confetti);
+          setTimeout(() => confetti.remove(), 5000);
+        }
+      }
+      createConfetti();
+      const phone = localStorage.getItem("paymentPhone");
+      const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+      const selectedPlan = JSON.parse(localStorage.getItem("selectedPlan"));
+      const transactionId = localStorage.getItem("transactionId");
+      const errorDiv = document.getElementById("paymentError");
+      if (!phone || !userDetails || !selectedPlan || !transactionId) {
+        errorDiv.textContent = "Missing payment information. Please try again.";
+        errorDiv.style.display = "block";
+        setTimeout(() => window.location.href = "plans.html", 2000);
+        return;
+      }
+      document.getElementById("userPhone").textContent = phone;
+      document.getElementById("userEmail").textContent = userDetails.email || "Not provided";
+      document.getElementById("planName").textContent = selectedPlan.planName || "N/A";
+      document.getElementById("planAmount").textContent = selectedPlan.amount || "0";
+      document.getElementById("planValidity").textContent = selectedPlan.validityDays || "0";
+      document.getElementById("planData").textContent = selectedPlan.dataVolume || "N/A";
+      document.getElementById("planBenefits").textContent = selectedPlan.benefits || "N/A";
+      document.getElementById("transactionId").textContent = transactionId;
+      const emailMsg = document.getElementById("emailMsg");
+      if (userDetails.email) {
+        emailMsg.innerHTML = `<i class="bi bi-envelope-check"></i> Email sent successfully to ${userDetails.email}.`;
+      } else {
+        emailMsg.innerHTML = `<i class="bi bi-envelope-check"></i> No email provided.`;
+        emailMsg.style.color = "#dc3545";
+      }
+      // Newsletter Subscription
+      const newsletterForm = document.getElementById('newsletterForm');
+      const subscriptionMessage = document.getElementById('subscription-message');
+      newsletterForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const email = document.getElementById('newsletterEmail').value;
+        subscriptionMessage.style.display = 'none';
+        try {
+          const response = await fetch('http://localhost:8081/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const result = await response.text();
+          if (response.ok) {
+            subscriptionMessage.textContent = 'Subscription successful!';
+            subscriptionMessage.style.display = 'block';
+            newsletterForm.reset();
+            setTimeout(() => subscriptionMessage.style.display = 'none', 5000);
+          } else {
+            subscriptionMessage.textContent = result;
+            subscriptionMessage.style.color = '#dc3545';
+            subscriptionMessage.style.display = 'block';
+            setTimeout(() => subscriptionMessage.style.display = 'none', 5000);
+          }
+        } catch (error) {
+          subscriptionMessage.textContent = 'Error subscribing. Try again.';
+          subscriptionMessage.style.color = '#dc3545';
+          subscriptionMessage.style.display = 'block';
+          setTimeout(() => subscriptionMessage.style.display = 'none', 5000);
+        }
+      });
+      // Modal Functionality
+      const modalTriggers = document.querySelectorAll('[data-modal-target]');
+      const modalClosers = document.querySelectorAll('[data-modal-close]');
+      modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+          const modalId = this.getAttribute('data-modal-target');
+          document.getElementById(modalId).classList.add('show');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      modalClosers.forEach(closer => {
+        closer.addEventListener('click', function() {
+          const modal = this.closest('.modal-custom');
+          modal.classList.remove('show');
+          document.body.style.overflow = 'auto';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

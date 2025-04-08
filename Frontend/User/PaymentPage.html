@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Page - Mobi-Comm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+      :root {
+        --primary-color: #717eb4;
+        --secondary-color: #62879a;
+        --accent-color: #f72585;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --success-color: #4cc9f0;
+        --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --hover-transform: translateY(-5px);
+        
+        /* Icon Colors */
+        --icon-price: #f72585;
+        --icon-validity: #3a86ff;
+        --icon-data: #4361ee;
+        --icon-benefits: #7209b7;
+        --icon-phone: #f72585;
+        --icon-person: #4361ee;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f0f4f8;
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Enhanced Header */
+      .header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 1rem 0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        position: relative;
+        z-index: 100;
+      }
+      
+      .edit-icon {
+        cursor: pointer;
+        margin-left: 0.5rem;
+        color: var(--primary-color);
+      }
+      .edit-icon:hover {
+        color: var(--secondary-color);
+      }
+      .error-message {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+      }
+      .header::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--accent-color), var(--primary-color), var(--secondary-color));
+      }
+
+      .header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      
+      .header-logo:hover {
+        transform: scale(1.05);
+      }
+      
+      .header-logo i {
+        font-size: 1.8rem;
+        margin-right: 0.5rem;
+        color: var(--accent-color);
+        text-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
+      }
+
+      .header-nav a {
+        color: white;
+        margin-left: 1.5rem;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 0.5rem 0;
+      }
+
+      .header-nav a:hover {
+        color: rgba(255, 255, 255, 1);
+      }
+      
+      .header-nav a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: var(--accent-color);
+        transition: width 0.3s ease;
+      }
+      
+      .header-nav a:hover::after {
+        width: 100%;
+      }
+
+      /* Enhanced Banner */
+      .banner {
+        margin-top: 5px;
+        position: relative;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: rgb(14, 14, 14);
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .banner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IGlkPSJwYXR0ZXJuLWJhY2tncm91bmQiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InRyYW5zcGFyZW50Ij48L3JlY3Q+PHBhdGggZD0iTSAwIDIwIEwgNDAgMjAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjEpIiBzdHJva3Utd2lkdGg9IjIiPjwvcGF0aD48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybikiPjwvcmVjdD48L3N2Zz4=");
+        opacity: 0.2;
+        z-index: 1;
+      }
+      
+      /* Animated circles in background */
+      .banner::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(247, 37, 133, 0.1) 0%, transparent 25%),
+                    radial-gradient(circle at 80% 30%, rgba(67, 97, 238, 0.15) 0%, transparent 30%);
+        z-index: 1;
+      }
+
+      .banner-content {
+        position: relative;
+        z-index: 2;
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .banner-content h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(90deg, #fff, #f0f0f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .banner-content p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Main Content Area */
+      .main-content {
+        flex: 1;
+        padding: 3rem 0;
+        position: relative;
+        z-index: 1;
+      }
+      
+      /* Background decoration */
+      .main-content::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+          radial-gradient(circle at 10% 10%, rgba(67, 97, 238, 0.03) 0%, transparent 30%),
+          radial-gradient(circle at 90% 90%, rgba(247, 37, 133, 0.03) 0%, transparent 30%);
+        z-index: -1;
+      }
+
+      /* Enhanced Card Styling */
+      .card {
+        border-radius: 1.5rem;
+        border: none;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        background: white;
+      }
+
+      .card:hover {
+        transform: var(--hover-transform);
+        box-shadow: 0 15px 35px rgba(67, 97, 238, 0.15);
+      }
+
+      .card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        font-weight: 600;
+        padding: 1.25rem 1.5rem;
+        border-bottom: none;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      /* Card header decoration */
+      .card-header::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+        opacity: 0.6;
+      }
+      
+      .card-header h5 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      
+      .card-header i {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+        color: var(--accent-color);
+        text-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
+      }
+
+      .card-body {
+        padding: 1.75rem;
+      }
+      
+      .card-footer {
+        background: transparent;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.25rem 1.75rem;
+      }
+
+      /* Enhanced List Group Styling */
+      .list-group-item {
+        background-color: transparent;
+        border: none;
+        padding: 0.75rem 0;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+      
+      .list-group-item:last-child {
+        border-bottom: none;
+      }
+      
+      .list-group-item:hover {
+        transform: translateX(5px);
+        background-color: rgba(67, 97, 238, 0.02);
+      }
+
+      .list-group-item i {
+        margin-right: 0.75rem;
+        font-size: 1.2rem;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Colored icons */
+      .list-group-item i.bi-currency-rupee {
+        color: var(--icon-price);
+      }
+      
+      .list-group-item i.bi-calendar {
+        color: var(--icon-validity);
+      }
+      
+      .list-group-item i.bi-wifi {
+        color: var(--icon-data);
+      }
+      
+      .list-group-item i.bi-gift {
+        color: var(--icon-benefits);
+      }
+      
+      .list-group-item i.bi-phone {
+        color: var(--icon-phone);
+      }
+      
+      .list-group-item i.bi-person {
+        color: var(--icon-person);
+      }
+      
+      .list-group-item strong {
+        min-width: 80px;
+        display: inline-block;
+        color: var(--dark-color);
+      }
+
+      /* Section Headings */
+      h5.fw-bold {
+        position: relative;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.5rem;
+        color: var(--dark-color);
+      }
+      
+      h5.fw-bold::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        border-radius: 3px;
+      }
+
+      /* Enhanced Button Styling */
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 50px;
+        box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+      }
+      
+      /* Button ripple effect */
+      .btn-primary::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.3);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%);
+        transform-origin: 50% 50%;
+      }
+      
+      @keyframes ripple {
+        0% {
+          transform: scale(0, 0);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(20, 20);
+          opacity: 0;
+        }
+      }
+      
+      .btn-primary:hover::after {
+        animation: ripple 1s ease-out;
+      }
+      
+      /* Image styling */
+      .payment-image {
+        border-radius: 1.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+        transform: perspective(1000px) rotateY(-5deg);
+        position: relative;
+        z-index: 1;
+      }
+      
+      .payment-image:hover {
+        transform: perspective(1000px) rotateY(0deg) translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      /* Image decoration */
+      .image-container {
+        position: relative;
+      }
+      
+      .image-container::before,
+      .image-container::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        z-index: -1;
+      }
+      
+      .image-container::before {
+        width: 150px;
+        height: 150px;
+        background: rgba(67, 97, 238, 0.1);
+        top: -20px;
+        left: -20px;
+      }
+      
+      .image-container::after {
+        width: 100px;
+        height: 100px;
+        background: rgba(247, 37, 133, 0.1);
+        bottom: 30px;
+        right: 20px;
+      }
+
+      /* Enhanced Footer */
+      footer {
+        background: linear-gradient(135deg, #343a40, #212529);
+        color: #f8f9fa;
+        padding: 3rem 0 1rem;
+        position: relative;
+        margin-top: auto;
+      }
+
+      footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+      }
+
+      footer h5 {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 0.75rem;
+      }
+      
+      footer h5::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: var(--accent-color);
+        border-radius: 3px;
+      }
+
+      footer ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      footer ul li {
+        margin-bottom: 0.75rem;
+      }
+
+      footer ul li a {
+        color: #adb5bd;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      footer ul li a:hover {
+        color: white;
+        transform: translateX(5px);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 1.5rem;
+        margin-top: 2rem;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .header-nav a {
+          margin-left: 1rem;
+          font-size: 0.9rem;
+        }
+        
+        .banner-content h1 {
+          font-size: 2rem;
+        }
+        
+        .banner-content p {
+          font-size: 1rem;
+        }
+        
+        .payment-image {
+          margin-bottom: 2rem;
+          transform: none;
+        }
+        
+        .payment-image:hover {
+          transform: translateY(-5px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <a href="#" class="header-logo">
+        
+          <span>Mobi-Comm</span>
+        </a>
+        <div class="header-nav">
+          <a href="plans.html">Home</a>
+          <a href="plans.html#popular">Plans</a>
+    
+          <a href="About.html">About Us</a>
+        </div>
+      </div>
+    </header>
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container my-5">
+        <div class="row g-4">
+          <!-- Left Side: Image -->
+          <div class="col-md-6 d-flex align-items-center">
+            <div class="image-container animate__animated animate__fadeInLeft">
+              <img src="../Images/pay.jpg" alt="Payment Image" class="img-fluid payment-image" style="height: 400px;" />
+            </div>
+          </div>
+          <!-- Right Side: Card with Plan Summary and User Details -->
+          <div class="col-md-6 animate__animated animate__fadeInRight">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-credit-card"></i>Payment Details</h5>
+              </div>
+              <div class="card-body" id="paymentDetails"></div>
+              <div class="card-footer text-center">
+                <button class="btn btn-primary fw-bold w-100" id="continueBtn">
+                  <i class="bi bi-lock-fill me-2"></i>Pay Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <h5>Mobi-Comm Service</h5>
+            <p>Connecting People, Anytime, Anywhere.</p>
+            <div class="social-icons mt-3">
+              <a href="#" class="me-3 text-white"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="me-3 text-white"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="me-3 text-white"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="me-3 text-white"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="col-md-2 mb-4">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="About.html">About Us</a></li>
+              <li><a href="plans.html">Plans</a></li>
+              <li><a href="#">Support</a></li>
+            </ul>
+          </div>
+          <div class="col-md-2 mb-4">
+            <h5>Resources</h5>
+            <ul>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-4">
+            <h5>Contact Us</h5>
+            <p><i class="bi bi-geo-alt me-2"></i> 123 Telecom Street, Digital City</p>
+            <p><i class="bi bi-envelope me-2"></i> support@mobicomm.com</p>
+            <p><i class="bi bi-telephone me-2"></i> +1 (555) 123-4567</p>
+          </div>
+        </div>
+        <div class="footer-bottom text-center">
+          <p>© 2025 Mobi-Comm Service. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const selectedPlan = JSON.parse(localStorage.getItem("selectedPlan")) || {};
+        const phone = localStorage.getItem("paymentPhone");
+        const userDetails = JSON.parse(localStorage.getItem("userDetails")) || {};
+        const paymentDetailsDiv = document.getElementById("paymentDetails");
+        const continueBtn = document.getElementById("continueBtn");
+
+        if (selectedPlan && Object.keys(selectedPlan).length > 0 && phone && userDetails && Object.keys(userDetails).length > 0) {
+    if (userDetails.phone !== phone) {
+      paymentDetailsDiv.innerHTML = `<div class="alert alert-danger">User details mismatch. Please re-enter your phone number on the plans page.</div>`;
+      continueBtn.disabled = true;
+      return;
+    }          paymentDetailsDiv.innerHTML = `
+            <h5 class="fw-bold text-center mb-3">Plan Summary</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><i class="bi bi-currency-rupee"></i><strong>Price:</strong> ₹${selectedPlan.amount || 0}</li>
+              <li class="list-group-item"><i class="bi bi-calendar"></i><strong>Validity:</strong> ${selectedPlan.validityDays || 0} Days</li>
+              <li class="list-group-item"><i class="bi bi-wifi"></i><strong>Data:</strong> ${selectedPlan.dataVolume || "N/A"}</li>
+              <li class="list-group-item"><i class="bi bi-gift"></i><strong>Benefits:</strong> ${selectedPlan.benefits || "N/A"}</li>
+            </ul>
+            <h5 class="fw-bold text-center mt-4 mb-3">User Details</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><i class="bi bi-phone"></i><strong>Phone:</strong> ${phone}</li>
+              <li class="list-group-item"><i class="bi bi-person"></i><strong>Name:</strong> ${userDetails.fullName || "N/A"}</li>
+              <li class="list-group-item" id="emailItem">
+                <i class="bi bi-envelope"></i><strong>Email:</strong> <span id="emailText">${userDetails.email || "N/A"}</span>
+                <i class="bi bi-pencil-square edit-icon" id="editEmailIcon"></i>
+              </li>
+            </ul>
+            <div class="text-center mt-4">
+              <div class="d-flex align-items-center justify-content-center">
+                <i class="bi bi-shield-check me-2" style="color: var(--success-color); font-size: 1.2rem;"></i>
+                <span>Secure Payment </span>
+              </div>
+            </div>
+          `;
+
+          // Email edit functionality
+          document.getElementById("editEmailIcon").addEventListener("click", function () {
+            const emailText = document.getElementById("emailText");
+            const currentEmail = emailText.textContent;
+            emailText.innerHTML = `<input type="email" id="emailInput" value="${currentEmail}" class="form-control d-inline" style="width: auto;" />`;
+            this.style.display = "none";
+            const saveIcon = document.createElement("i");
+            saveIcon.className = "bi bi-check-circle edit-icon";
+            saveIcon.id = "saveEmailIcon";
+            emailText.appendChild(saveIcon);
+
+            saveIcon.addEventListener("click", function () {
+              const newEmail = document.getElementById("emailInput").value.trim();
+              if (newEmail && newEmail !== currentEmail) {
+                fetch(`http://localhost:8081/api/users/update-email`, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ phone: phone, email: newEmail }),
+                })
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error("Failed to update email");
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    if (data.message === "Email updated successfully") {
+                      emailText.innerHTML = newEmail;
+                      userDetails.email = newEmail;
+                      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+                      document.getElementById("editEmailIcon").style.display = "inline";
+                    } else {
+                      throw new Error("Email update failed");
+                    }
+                  })
+                  .catch(error => {
+                    console.error("Error updating email:", error);
+                    const errorDiv = document.createElement("div");
+                    errorDiv.className = "error-message";
+                    errorDiv.textContent = "Failed to update email. Please try again.";
+                    emailText.parentElement.appendChild(errorDiv);
+                    emailText.innerHTML = currentEmail;
+                    document.getElementById("editEmailIcon").style.display = "inline";
+                  });
+              } else {
+                emailText.innerHTML = currentEmail;
+                document.getElementById("editEmailIcon").style.display = "inline";
+              }
+            });
+          });
+        } else {
+          paymentDetailsDiv.innerHTML = `<div class="alert alert-danger">No plan or user details found. Please start from the plans page.</div>`;
+        }
+
+        // Set button state
+        if (!selectedPlan || Object.keys(selectedPlan).length === 0 || !phone || !userDetails || Object.keys(userDetails).length === 0) {
+          continueBtn.disabled = true;
+          continueBtn.textContent = "Select a Plan First";
+        } else {
+          continueBtn.disabled = false;
+          continueBtn.innerHTML = '<i class="bi bi-lock-fill me-2"></i>Pay Now';
+        }
+
+        // Initiate Razorpay payment
+        function initiateRazorpayPayment(orderId, amount, transactionId) {
+          const options = {
+            key: "rzp_test_spaeoXaSD8ACMW",
+            amount: amount * 100,
+            currency: "INR",
+            name: "Mobi-Comm Service",
+            description: `Payment for ${selectedPlan.planName || "Plan"}`,
+            order_id: orderId,
+            handler: function (response) {
+              fetch("http://localhost:8081/api/payment/verifyPayment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  phone: phone,
+                }),
+              })
+                .then(res => {
+                  if (!res.ok) throw new Error("Payment verification failed");
+                  return res.json();
+                })
+                .then(data => {
+                  if (data.status === "success") {
+                    localStorage.setItem("transactionId", transactionId);
+                    window.location.replace(data.redirect || "paymentSuccess.html");
+                  } else {
+                    const errorDiv = document.createElement("div");
+                    errorDiv.className = "error-message text-center";
+                    errorDiv.textContent = "Payment verification failed: " + data.message;
+                    paymentDetailsDiv.appendChild(errorDiv);
+                  }
+                })
+                .catch(error => {
+                  console.error("Verification error:", error);
+                  const errorDiv = document.createElement("div");
+                  errorDiv.className = "error-message text-center";
+                  errorDiv.textContent = "Payment verification failed. Please try again.";
+                  paymentDetailsDiv.appendChild(errorDiv);
+                });
+            },
+            prefill: {
+              name: userDetails.fullName || "Customer",
+              email: userDetails.email || "customer@example.com",
+              contact: phone,
+            },
+            theme: { color: "#4361ee" },
+            modal: {
+              ondismiss: function () {
+                console.log("Payment modal closed without completion");
+              }
+            }
+          };
+          const rzp = new Razorpay(options);
+          rzp.open();
+        }
+
+        // Pay Now button handler
+        continueBtn.addEventListener("click", function () {
+          continueBtn.disabled = true;
+          continueBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...';
+
+          fetch("http://localhost:8081/api/payment/createOrder", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              planId: selectedPlan.id.toString(),
+              phone: phone,
+            }),
+          })
+            .then(response => {
+              if (!response.ok) {
+                return response.text().then(text => {
+                  throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+                });
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (data.orderId && data.transactionId) {
+                initiateRazorpayPayment(data.orderId, selectedPlan.amount, data.transactionId);
+              } else {
+                throw new Error("Invalid response from server: No orderId");
+              }
+            })
+            .catch(error => {
+              console.error("Order creation error:", error);
+              const errorDiv = document.createElement("div");
+              errorDiv.className = "error-message text-center";
+              errorDiv.textContent = "Failed to create payment order: " + error.message;
+              paymentDetailsDiv.appendChild(errorDiv);
+              continueBtn.disabled = false;
+              continueBtn.innerHTML = '<i class="bi bi-lock-fill me-2"></i>Pay Now';
+            });
+        });
+      });
+    </script>
+  </body>
+</html>

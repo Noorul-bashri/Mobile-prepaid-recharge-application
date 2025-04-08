@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - Mobi-Comm Services Ltd.</title>
+
+  <!-- Bootstrap CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- AOS Library for scroll animations -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- AOS Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <link rel="stylesheet" href="/css/main.min.css" />
+
+  <style>
+    /* Global Styles */
+    :root {
+      --primary-color: #6c63ff;
+      --primary-light: #9d9ade;
+      --primary-dark: #4d44d9;
+      --secondary-color: #55afc1;
+      --accent-color: #ff6b6b;
+      --text-dark: #333333;
+      --text-light: #ffffff;
+      --bg-light: #f8f9fa;
+      --bg-dark: #343a40;
+      --transition-speed: 0.3s;
+      --section-spacing: 80px;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      background-color: #f9f9f9;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .content-container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+
+    p {
+  text-align: justify;
+  /* Forces the last line to justify as well */
+}
+    /* Header Banner with Parallax Effect */
+    header.banner {
+      position: relative;
+      background: url('../Images/backgrounf.jpeg') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    header.banner::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+      z-index: 1;
+    }
+
+    header.banner .banner-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header.banner .banner-content h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    header.banner .banner-content p {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Navbar Styles (from ValidationPage.html) */
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1rem 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      position: relative;
+      z-index: 100;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent-color), var(--primary-color), var(--secondary-color));
+    }
+
+    .header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .header-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .header-nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .header-nav a:hover {
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .header-nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease;
+    }
+
+    .header-nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Shared container styling */
+    .highlight {
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      margin-bottom: 2rem;
+      transition: all 0.4s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .highlight::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .highlight:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .highlight:hover::before {
+      transform: scaleX(1);
+    }
+
+    /* Section Headings */
+    .section-heading {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      position: relative;
+      display: inline-block;
+      font-weight: 700;
+    }
+
+    .section-heading::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--primary-color);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .highlight:hover .section-heading::after {
+      width: 100%;
+    }
+
+    .section-content p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+
+    /* About Us Section */
+    .about-section {
+      padding: var(--section-spacing) 0;
+    }
+
+    .about-section h5 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      position: relative;
+      display: inline-block;
+    }
+
+    .about-section h5::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 50px;
+      height: 4px;
+      background: var(--primary-color);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .about-section:hover h5::after {
+      width: 100px;
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    .about-image-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-image-container img {
+      transition: transform 0.5s ease;
+    }
+
+    .about-image-container:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Mission & Vision Sections */
+    .mission-vision-section {
+      padding: var(--section-spacing) 0;
+    }
+
+    .mission-vision-image {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      height: 300px;
+    }
+
+    .mission-vision-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .mission-vision-image:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Team Section */
+    .team-section {
+      padding: var(--section-spacing) 0;
+      background-color: var(--bg-light);
+    }
+
+    .team-heading {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .team-heading h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .team-heading h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--primary-color);
+      border-radius: 2px;
+    }
+
+    .team-heading p {
+      font-size: 1.1rem;
+      color: #555;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .team-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      margin-bottom: 30px;
+    }
+
+    .team-card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .team-image {
+      position: relative;
+      overflow: hidden;
+      height: 300px;
+    }
+
+    .team-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .team-card:hover .team-image img {
+      transform: scale(1.1);
+    }
+
+    .team-info {
+      padding: 25px;
+      text-align: center;
+    }
+
+    .team-info h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: var(--text-dark);
+    }
+
+    .team-info p.position {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .team-info p.bio {
+      color: #555;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      text-align: justify;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(108, 99, 255, 0.1);
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: var(--primary-color);
+      color: white;
+      transform: translateY(-5px);
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: var(--section-spacing) 0;
+    }
+
+    .faq-heading {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .faq-heading h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .faq-heading h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--primary-color);
+      border-radius: 2px;
+    }
+
+    .faq-heading p {
+      font-size: 1.1rem;
+      color: #555;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .accordion-item {
+      border: none;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .accordion-item:hover {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .accordion-button {
+      padding: 20px 25px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--text-dark);
+      background: white;
+    }
+
+    .accordion-button:not(.collapsed) {
+      color: var(--primary-color);
+      background: white;
+      box-shadow: none;
+    }
+
+    .accordion-button:focus {
+      box-shadow: none;
+      border-color: rgba(108, 99, 255, 0.25);
+    }
+
+    .accordion-body {
+      padding: 20px 25px;
+      color: #555;
+      font-size: 1rem;
+      line-height: 1.7;
+      text-align: justify;
+    }
+
+    /* Footer Styles (from ValidationPage.html) */
+    .footer-top {
+      background: linear-gradient(135deg, #343a40, #212529);
+      padding: 4rem 0 2rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-top::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    }
+
+    .footer-top h5 {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+      color: white;
+    }
+
+    .footer-top h5::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--primary-color);
+      border-radius: 1.5px;
+    }
+
+    .footer-top p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.7;
+    }
+
+    .footer-top ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .footer-top ul li {
+      margin-bottom: 0.8rem;
+      transition: transform 0.3s ease;
+    }
+
+    .footer-top ul li:hover {
+      transform: translateX(5px);
+    }
+
+    .footer-top ul li a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7);
+      transition: color 0.3s ease;
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .footer-top ul li a::before {
+      content: '→';
+      position: absolute;
+      left: -20px;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footer-top ul li a:hover {
+      color: white;
+      padding-left: 20px;
+    }
+
+    .footer-top ul li a:hover::before {
+      opacity: 1;
+      left: 0;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      background: var(--primary-color);
+      transform: translateY(-5px);
+    }
+
+    .newsletter-section {
+      margin-top: 2rem;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      max-width: 100%;
+      margin-top: 15px;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .newsletter-form input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .newsletter-form input:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .newsletter-form button {
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .newsletter-form button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .message-success {
+      color: #28a745;
+      background-color: rgba(40, 167, 69, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    .message-error {
+      color: #dc3545;
+      background-color: rgba(220, 53, 69, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    .newsletter-extra p {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 15px;
+    }
+
+    .footer-bottom {
+      background: #212529;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      padding: 1.25rem 0;
+      position: relative;
+    }
+
+    /* Modal Styles */
+    .modal-custom {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeInModal 0.3s ease-out;
+    }
+
+    .modal-custom.show {
+      display: block;
+    }
+
+    @keyframes fadeInModal {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content-custom {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+      animation: slideInModal 0.3s ease-out;
+    }
+
+    @keyframes slideInModal {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header-custom {
+      border-bottom: none;
+      padding-bottom: 0;
+      text-align: center;
+    }
+
+    .modal-header-custom h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin: 0;
+    }
+
+    .modal-body-custom {
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 20px 0;
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .modal-footer-custom {
+      border-top: none;
+      padding-top: 0;
+      text-align: center;
+    }
+
+    .btn-close-custom {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .btn-close-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      :root { --section-spacing: 60px; }
+      header.banner .banner-content h1 { font-size: 2rem; }
+      .section-heading { font-size: 2rem; }
+      .team-image { height: 250px; }
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <!-- Header Banner -->
+  <header class="banner">
+    <div class="content-container banner-content">
+      <h1>Mobi-Comm Service Pvt Ltd</h1>
+      <p>Empowering the future of digital communication with seamless connectivity and innovative solutions.</p>
+    </div>
+  </header>
+
+  <!-- Navbar (Matching ValidationPage.html) -->
+  <header class="header">
+    <div class="container">
+      <a href="ValidationPage.html" class="header-logo">
+        <span>Mobi-Comm</span>
+      </a>
+      <div class="header-nav">
+        <a href="plans.html">Plans</a>
+       
+        <a href="#">Support</a>
+        <a href="Login.html">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Us Section -->
+  <section class="about-section">
+    <div class="content-container">
+      <div class="row align-items-center">
+        <div class="col-md-8" data-aos="fade-right" data-aos-duration="1000">
+          <h5>About Us</h5>
+          <p>
+            At Mobi-Comm Service Pvt Ltd, we're dedicated to revolutionizing the mobile recharge experience. Founded in 2015, we've grown from a small startup to a leading provider of digital connectivity solutions across the nation. To recharge your mobile number, simply enter your number and select continue to enter your email. Browse through available plans and choose one that fits your needs. Proceed with payment using options like UPI, debit/credit card, net banking, or digital wallets. Upon successful payment, you'll receive a confirmation. Our platform processes over 1 million transactions daily, serving customers with reliability, security, and convenience. We partner with all major telecom providers to offer comprehensive coverage and the best available plans.
+          </p>
+        </div>
+        <div class="col-md-4" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+          <div class="about-image-container">
+            <img src="../Images/5g.jpg" alt="About Us" class="img-fluid rounded" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Mission Section -->
+  <section class="mission-vision-section">
+    <div class="content-container">
+      <div class="highlight" data-aos="fade-up" data-aos-duration="1000">
+        <div class="row align-items-center">
+          <div class="col-md-4">
+            <div class="mission-vision-image">
+              <img src="../Images/mission.jpeg" alt="Our Mission" class="img-fluid rounded" />
+            </div>
+          </div>
+          <div class="col-md-8">
+            <h2 class="section-heading">Our Mission</h2>
+            <div class="section-content">
+              <p>
+                Our mission is to empower every individual and business with reliable, innovative digital solutions that transform the way they connect, communicate, and engage with the world. We strive to provide state-of-the-art connectivity and digital services that are accessible, efficient, and secure.
+              </p>
+              <p>
+                By continuously innovating and adapting to emerging technologies, we aim to be the catalyst for change in the digital ecosystem—ensuring that our customers are always ahead in a fast-paced technological era.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Vision Section -->
+  <section class="mission-vision-section">
+    <div class="content-container">
+      <div class="highlight" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h2 class="section-heading">Our Vision</h2>
+            <div class="section-content">
+              <p>
+                We envision a world where seamless digital connectivity transforms every aspect of life—from how we communicate to how we work and play. Our vision is to lead the way in creating a fully interconnected, intelligent digital landscape that bridges distances and connects people across the globe.
+              </p>
+              <p>
+                As we continue to grow, our focus remains on building innovative solutions that anticipate the needs of tomorrow, ensuring that our services remain relevant, efficient, and transformative.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mission-vision-image">
+              <img src="../Images/vision.jpeg" alt="Our Vision" class="img-fluid rounded" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Members Section -->
+  <section class="team-section">
+    <div class="content-container">
+      <div class="team-heading" data-aos="fade-up" data-aos-duration="1000">
+        <h2>Our Leadership Team</h2>
+        <p>Meet the visionaries behind Mobi-Comm Service who are driving innovation and excellence in digital connectivity</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+          <div class="team-card">
+            <div class="team-image">
+              <img src="/Images/rajiv.jpg" alt="Rajiv Sharma">
+            </div>
+            <div class="team-info">
+              <h4>Rajiv Sharma</h4>
+              <p class="position">Chief Executive Officer</p>
+              <p class="bio">With over 15 years of experience in the telecom industry, Rajiv leads our company with vision and strategic insight, driving innovation and growth.</p>
+              <div class="social-links">
+                <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="social-link"><i class="bi bi-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+          <div class="team-card">
+            <div class="team-image">
+              <img src="/Images/priya.jpg" alt="Priya Patel">
+            </div>
+            <div class="team-info">
+              <h4>Priya Patel</h4>
+              <p class="position">Chief Technology Officer</p>
+              <p class="bio">Priya oversees our technological infrastructure and development, ensuring our platform remains at the cutting edge of digital innovation.</p>
+              <div class="social-links">
+                <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-link"><i class="bi bi-github"></i></a>
+                <a href="#" class="social-link"><i class="bi bi-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+          <div class="team-card">
+            <div class="team-image">
+              <img src="/Images/vikram.jpg" alt="Vikram Mehta">
+            </div>
+            <div class="team-info">
+              <h4>Vikram Mehta</h4>
+              <p class="position">Chief Marketing Officer</p>
+              <p class="bio">Vikram leads our marketing initiatives with creativity and data-driven strategies.</p>
+              <br>
+              <div class="social-links">
+                <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="social-link"><i class="bi bi-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="content-container">
+      <div class="faq-heading" data-aos="fade-up" data-aos-duration="1000">
+        <h2>Frequently Asked Questions</h2>
+        <p>Find answers to common questions about our services and mobile recharge process</p>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  How do I recharge my mobile number?
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  To recharge your mobile number, simply enter your number on our platform and click "Continue." You'll be prompted to enter your email address, after which you can browse available plans. Select a plan that suits your needs, proceed to payment using your preferred method (UPI, card, net banking, or digital wallet), and upon successful payment, you'll receive a confirmation.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Which mobile operators do you support?
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  We support all major mobile operators in the country, including but not limited to Airtel, Jio, Vi (Vodafone Idea), and BSNL. Our platform is continuously updated to include the latest plans and offers from all supported operators.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+              <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  How long does it take for the recharge to be processed?
+                </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Most recharges are processed instantly, and you should see the benefits reflected on your mobile number within seconds to a few minutes. In rare cases, it might take up to 30 minutes due to network congestion or technical issues with the operator. If your recharge isn't processed within 30 minutes, please contact our customer support.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+              <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  What payment methods do you accept?
+                </button>
+              </h2>
+              <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  We accept a wide range of payment methods for your convenience, including UPI (Google Pay, PhonePe, Paytm, etc.), credit/debit cards, net banking, and digital wallets. All transactions are secured with industry-standard encryption to ensure your financial information remains safe.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">
+              <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  How can I contact customer support?
+                </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  Our customer support team is available 24/7 to assist you. You can reach us through email at support@mobicomm.com, call our toll-free number at 1800-123-4567, or use the live chat feature on our website. We aim to respond to all queries within 2 hours during business hours and within 12 hours during off-hours.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (Matching ValidationPage.html) -->
+  <footer>
+    <div class="footer-top">
+      <div class="content-container">
+        <div class="row">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <h5>Mobi-Comm Service Pvt Ltd</h5>
+            <p>Connecting People, Anytime, Anywhere.</p>
+            <div class="social-icons">
+              <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <h5>Quick Links</h5>
+            <ul>
+              <li><a href="About.html">About Us</a></li>
+              <li><a data-modal-target="privacyModal">Privacy Policy</a></li>
+              <li><a data-modal-target="termsModal">Terms & Conditions</a></li>
+              <li><a data-modal-target="refundModal">Refund Policy</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <h5>Connect With Us</h5>
+            <p>Follow us on social media for the latest updates.</p>
+          </div>
+        </div>
+        <div class="newsletter-section" data-aos="fade-up" data-aos-delay="400">
+          <h5>Subscribe to Our Newsletter</h5>
+          <p>Get the latest updates and exclusive offers delivered straight to your inbox.</p>
+          <form id="newsletterForm" class="newsletter-form" onsubmit="handleSubscription(event)">
+            <input type="email" id="newsletterEmail" placeholder="Enter your email" required>
+            <button type="submit" class="btn" id="subscribeButton">Subscribe</button>
+          </form>
+          <div id="subscription-message" class="message-success"></div>
+          <div class="newsletter-extra mt-2">
+            <p>
+              We value your privacy and promise not to spam your inbox. As a subscriber, you'll get exclusive insights, early access to offers, and behind-the-scenes updates.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="content-container">
+        <p class="mb-0">© 2025 Mobi-Comm Service Pvt Ltd. All Rights Reserved.</p>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal-custom">
+      <div class="modal-content-custom">
+        <div class="modal-header-custom">
+          <h2>Privacy Policy</h2>
+        </div>
+        <div class="modal-body-custom">
+          <p>
+            At Mobi-Comm Service Pvt Ltd, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you use our services.
+          </p>
+          <p><strong>Information Collection:</strong> We collect information such as your name, mobile number, email address, and payment details when you register or recharge through our platform.</p>
+          <p><strong>Use of Information:</strong> Your data is used to process transactions, provide customer support, and improve our services. We may also use it to send you promotional offers, with your consent.</p>
+          <p><strong>Data Security:</strong> We implement industry-standard security measures to protect your information from unauthorized access, disclosure, or misuse.</p>
+          <p><strong>Third-Party Sharing:</strong> We do not sell or share your personal information with third parties, except as required by law or to facilitate services (e.g., payment processing).</p>
+          <p><strong>Your Rights:</strong> You have the right to access, update, or delete your personal information by contacting our support team.</p>
+          <p>This policy may be updated periodically, and we encourage you to review it regularly.</p>
+        </div>
+        <div class="modal-footer-custom">
+          <button class="btn-close-custom" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div id="termsModal" class="modal-custom">
+      <div class="modal-content-custom">
+        <div class="modal-header-custom">
+          <h2>Terms & Conditions</h2>
+        </div>
+        <div class="modal-body-custom">
+          <p>By using Mobi-Comm Service Pvt Ltd's services, you agree to abide by these Terms & Conditions.</p>
+          <p><strong>Service Usage:</strong> Our services are intended for personal use only. You must provide accurate information during registration and transactions.</p>
+          <p><strong>Payments:</strong> All payments are non-refundable unless explicitly stated otherwise. You are responsible for ensuring sufficient funds are available during transactions.</p>
+          <p><strong>Account Responsibility:</strong> You are responsible for maintaining the confidentiality of your account details and for all activities under your account.</p>
+          <p><strong>Service Availability:</strong> We strive to provide uninterrupted service but are not liable for downtime due to maintenance or unforeseen circumstances.</p>
+          <p><strong>Termination:</strong> We reserve the right to suspend or terminate your access if you violate these terms.</p>
+          <p>These terms are governed by applicable laws, and disputes will be resolved through arbitration.</p>
+        </div>
+        <div class="modal-footer-custom">
+          <button class="btn-close-custom" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Refund Policy Modal -->
+    <div id="refundModal" class="modal-custom">
+      <div class="modal-content-custom">
+        <div class="modal-header-custom">
+          <h2>Refund Policy</h2>
+        </div>
+        <div class="modal-body-custom">
+          <p>Mobi-Comm Service Pvt Ltd strives to ensure customer satisfaction. This Refund Policy outlines the conditions under which refunds may be processed.</p>
+          <p><strong>Eligibility:</strong> Refunds are applicable only if a recharge fails due to a technical error on our end and the service is not delivered.</p>
+          <p><strong>Non-Refundable Cases:</strong> Successful recharges, user errors (e.g., entering incorrect mobile numbers), or changes of mind are not eligible for refunds.</p>
+          <p><strong>Process:</strong> To request a refund, contact our support team within 7 days of the transaction with your order details. Refunds will be processed within 10-15 business days upon approval.</p>
+          <p><strong>Exceptions:</strong> Promotional offers or discounted plans may have specific refund terms, disclosed at the time of purchase.</p>
+          <p>We reserve the right to deny refunds if the request does not meet our policy criteria.</p>
+        </div>
+        <div class="modal-footer-custom">
+          <button class="btn-close-custom" data-modal-close>Close</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+      });
+
+      // Newsletter Subscription with Styled Messages
+      const newsletterForm = document.getElementById('newsletterForm');
+      const subscriptionMessage = document.getElementById('subscription-message');
+      const subscribeButton = document.getElementById('subscribeButton');
+
+      async function handleSubscription(event) {
+        event.preventDefault();
+        const email = document.getElementById('newsletterEmail').value;
+        subscriptionMessage.style.display = 'none';
+        subscribeButton.disabled = true;
+        subscribeButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Subscribing...';
+
+        try {
+          const response = await fetch('http://localhost:8081/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const result = await response.text();
+          if (response.ok) {
+            subscriptionMessage.textContent = 'Subscription successful! You will get the latest updates through the subscribed email';
+            subscriptionMessage.className = 'message-success';
+            subscriptionMessage.style.display = 'block';
+            newsletterForm.reset();
+            setTimeout(() => {
+              subscriptionMessage.style.display = 'none';
+            }, 5000);
+          } else {
+            subscriptionMessage.textContent = result;
+            subscriptionMessage.className = 'message-error';
+            subscriptionMessage.style.display = 'block';
+            setTimeout(() => {
+              subscriptionMessage.style.display = 'none';
+            }, 5000);
+          }
+        } catch (error) {
+          subscriptionMessage.textContent = 'An error occurred. Please try again later.';
+          subscriptionMessage.className = 'message-error';
+          subscriptionMessage.style.display = 'block';
+          setTimeout(() => {
+            subscriptionMessage.style.display = 'none';
+          }, 5000);
+        } finally {
+          subscribeButton.innerHTML = 'Subscribe';
+          subscribeButton.disabled = false;
+        }
+      }
+
+      newsletterForm.addEventListener('submit', handleSubscription);
+
+      // Modal Functionality
+      const modalTriggers = document.querySelectorAll('[data-modal-target]');
+      const modalClosers = document.querySelectorAll('[data-modal-close]');
+
+      modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+          const modalId = this.getAttribute('data-modal-target');
+          document.getElementById(modalId).classList.add('show');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      modalClosers.forEach(closer => {
+        closer.addEventListener('click', function() {
+          const modal = this.closest('.modal-custom');
+          modal.classList.remove('show');
+          document.body.style.overflow = 'auto';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
